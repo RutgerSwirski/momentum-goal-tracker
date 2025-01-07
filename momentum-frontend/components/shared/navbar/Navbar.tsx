@@ -1,4 +1,3 @@
-// use clie
 "use client";
 
 import PrimaryButton from "@/components/buttons/PrimaryButton";
