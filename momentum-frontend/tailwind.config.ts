@@ -14,7 +14,7 @@ export default {
       fontSize: {
         //headline font weight bold size is 64px and line height is 72px
         headline: ["64px", { lineHeight: "72px", fontWeight: "bold" }],
-        subheadline: ["24px", { lineHeight: "36px" }],
+        subheadline: ["20px", { lineHeight: "36px" }],
         button: ["16px", { lineHeight: "24px", fontWeight: "bold" }],
       },
       colors: {

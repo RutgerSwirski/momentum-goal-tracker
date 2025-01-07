@@ -33,11 +33,11 @@ const Navbar = () => {
   return (
     <nav
       ref={navbarRef}
-      className="fixed top-0 left-0 w-full z-10 bg-opacity-10 duration-150 transition-colors ease-in-out text-white flex justify-between px-8 py-4"
+      className="fixed top-0 left-0 w-full z-10 bg-opacity-10 duration-150 transition-colors ease-in-out text-white flex justify-between items-center px-8 py-4"
     >
       <Link href="/">
         <Image
-          src="/images/navbarlogo.svg"
+          src="/images/logo.svg"
           alt="Momentum Logo"
           width={0}
           height={0}
