@@ -10,8 +10,8 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello, TypeScript with Node.js!");
 });
 
+app.use("/api", exampleRoute);
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
-
-app.use("/api", exampleRoute);
