@@ -1,5 +1,6 @@
 // import Image from "next/image";
 
+import LandingAbout from "@/components/landing/About";
 import LandingHero from "@/components/landing/Hero";
 
 const LandingPage = () => {
@@ -7,7 +8,7 @@ const LandingPage = () => {
     <div>
       <LandingHero />
 
-      <div className="h-96 bg-secondary_navy ">Section</div>
+      <LandingAbout />
     </div>
   );
 };
