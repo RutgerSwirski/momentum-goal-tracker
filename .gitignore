@@ -1,0 +1,9 @@
+/momentum-frontend/node_modules
+/momentum-frontend/.env
+
+/momentum-backend/node_modules
+/momentum-backend/.env
+
+# the package lock
+/momentum-frontend/package-lock.json
+/momentum-backend/package-lock.json
