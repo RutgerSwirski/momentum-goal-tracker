@@ -214,7 +214,7 @@ const DashboardPage = () => {
               {challenges.map((challenge, index) => (
                 <li
                   key={index}
-                  className="flex items-center justify-between p-2 bg-gray-50 rounded-md shadow-sm hover:bg-gray-100 transition-colors"
+                  className="flex items-center gap-2 justify-between p-2 bg-gray-50 rounded-md shadow-sm hover:bg-gray-100 transition-colors"
                 >
                   {/* Left: Icon and Details */}
                   <div className="flex items-center gap-4">
