@@ -12,21 +12,26 @@ const DashboardTable = ({ tasks }: DashboardTableProps) => {
   return (
     <Card>
       <h3 className="text-xl font-semibold mb-4">Tasks for Today</h3>
-      <table className="w-full table-auto border-collapse">
+      <table className="w-full table-auto border-collapse rounded-lg ">
         <thead>
           <tr className="bg-gray-100">
-            <th className="p-2 border">Task</th>
-            <th className="p-2 border">Goal</th>
-            <th className="p-2 border">Priority</th>
-            <th className="p-2 border">Actions</th>
+            <th className="p-4 text-left  ">Task</th>
+            <th className="p-4 text-left  ">Goal</th>
+            <th className="p-4 text-left  ">Priority</th>
+            <th className="p-4 text-left  ">Actions</th>
           </tr>
         </thead>
         <tbody>
           {tasks.map((task, index) => (
-            <tr key={index} className="border">
-              <td className="p-2">{task.name}</td>
-              <td className="p-2">{task.goal}</td>
-              <td className="p-2">
+            <tr
+              key={index}
+              className={`${
+                index % 2 === 0 ? "bg-gray-50" : "bg-white"
+              } hover:bg-teal-50 transition-colors  `}
+            >
+              <td className="p-4 ">{task.name}</td>
+              <td className="p-4  ">{task.goal}</td>
+              <td className="p-4  ">
                 <span
                   className={`text-xs font-semibold py-1 px-2 rounded ${
                     task.priority === "High"
@@ -39,7 +44,7 @@ const DashboardTable = ({ tasks }: DashboardTableProps) => {
                   {task.priority}
                 </span>
               </td>
-              <td className="p-2">
+              <td className="p-4 ">
                 <button className="text-teal-500 hover:underline">
                   Complete
                 </button>

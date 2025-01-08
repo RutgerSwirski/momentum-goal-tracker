@@ -2,7 +2,7 @@ import AuthorizedSidebar from "../sidebar/AuthorizedSidebar";
 
 const AuthorizedLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex min-h-screen gap-12">
+    <div className="flex min-h-screen gap-8">
       {/* Navbar */}
       <AuthorizedSidebar />
 

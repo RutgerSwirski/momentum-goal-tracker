@@ -1,4 +1,9 @@
 const DashboardHeader = () => {
+  const level = 80;
+  const xp = 50;
+  const xpToNextLevel = 100;
+  const xpProgress = Math.round((xp / xpToNextLevel) * 100);
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-col items-start gap-2">
@@ -10,13 +15,36 @@ const DashboardHeader = () => {
           goals.
         </h2>
       </div>
-      <ul className="flex items-center justify-between gap-8">
+
+      <div className="flex items-center gap-4">
+        {/* Level Display */}
+        <div className="flex flex-col items-center justify-center w-20 h-20 rounded-full bg-teal-100 text-teal-700 font-bold">
+          <span className="text-2xl">{level}</span>
+          <span className="text-sm">Level</span>
+        </div>
+
+        {/* XP Progress Section */}
+        <div className="flex-1">
+          <p className="text-sm text-gray-600 mb-2">
+            You're crushing it! Complete{" "}
+            <span className="font-bold">{xpToNextLevel - xp} more XP</span> to
+            reach Level {level + 1}.
+          </p>
+          <div className="w-full bg-gray-200 rounded-full h-4">
+            <div
+              className="bg-teal-500 h-4 rounded-full"
+              style={{ width: `${xpProgress}%` }}
+            ></div>
+          </div>
+        </div>
+      </div>
+      {/* <ul className="flex items-center justify-between gap-8">
         <li>Calendar</li>
         <li>Messages</li>
         <li>Notifications</li>
 
         <li>Profile</li>
-      </ul>
+      </ul> */}
     </div>
   );
 };
