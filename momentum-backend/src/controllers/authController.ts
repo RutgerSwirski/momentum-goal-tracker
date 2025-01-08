@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
 
-const signup = async (req: any, res: any) => {
+export const signup = async (req: any, res: any) => {
   const { name, email, password } = req.body;
 
   try {
@@ -24,13 +24,20 @@ const signup = async (req: any, res: any) => {
       expiresIn: "1h",
     });
 
-    res.status(201).json({ user, token });
+    res.cookie("authToken", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000,
+      sameSite: "strict",
+    });
+
+    res.status(201).json({ message: "User created" });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
 
-const login = async (req: any, res: any) => {
+export const login = async (req: any, res: any) => {
   const { email, password } = req.body;
 
   if (!email || !password)
@@ -49,10 +56,30 @@ const login = async (req: any, res: any) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
       expiresIn: "1h",
     });
-    res.status(200).json({ user, token });
+
+    res.cookie("authToken", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000,
+      sameSite: "strict",
+    });
+    res.status(200).json({ message: "Login successful" });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
 
-export { signup, login };
+export const validateToken = (req: any, res: any) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    return res.status(200).json({ valid: true, user: decoded });
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid token" });
+  }
+};

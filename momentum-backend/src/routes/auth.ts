@@ -2,13 +2,15 @@ import express from "express";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 
-import { signup, login } from "../controllers/authController";
+import { signup, login, validateToken } from "../controllers/authController";
 
 const router = express.Router();
 
 router.post("/signup", signup);
 
 router.post("/login", login);
+
+router.post("/validate", validateToken);
 
 router.get(
   "/google",
@@ -33,7 +35,15 @@ router.get(
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET!, {
       expiresIn: "1h",
     });
-    res.redirect(`http://localhost:3000/dashboard?token=${token}`);
+
+    res.cookie("authToken", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000,
+      sameSite: "strict",
+    });
+
+    res.redirect(`http://localhost:3000/dashboard`);
   }
 );
 
