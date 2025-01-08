@@ -1,0 +1,60 @@
+import mongoose from "mongoose";
+
+const goalSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
+    title: {
+      type: String,
+      required: true,
+      maxlength: 100,
+    },
+    description: {
+      type: String,
+      maxlength: 500,
+    },
+    dueDate: {
+      type: Date,
+      validate: {
+        validator: function (v) {
+          return v >= Date.now();
+        },
+        message: "Due date must be in the future",
+      },
+    },
+    status: {
+      type: String,
+      enum: ["pending", "in-progress", "completed"],
+      default: "pending",
+    },
+    priority: {
+      type: String,
+      enum: ["low", "medium", "high"],
+      default: "medium",
+    },
+    category: {
+      type: String,
+      enum: ["work", "personal", "fitness", "learning", "social"],
+      default: "work",
+    },
+    dateCompleted: {
+      type: Date,
+    },
+    deleted: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  {
+    timestamps: {
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    },
+  }
+);
+
+module.exports = mongoose.model("Goal", goalSchema);
