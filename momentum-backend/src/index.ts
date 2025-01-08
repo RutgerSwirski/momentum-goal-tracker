@@ -2,20 +2,24 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import express, { Request, Response } from "express";
 import exampleRoute from "./routes/example";
+import passport from "passport";
+import authRoutes from "./routes/auth";
 
 dotenv.config();
+
+require("./config/passport");
 
 const app = express();
 const port = 5000;
 
 app.use(express.json());
+app.use(passport.initialize());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, TypeScript with Node.js!");
 });
 
-app.use("/api", exampleRoute);
-// app.use("api/auth", authRoutes);
+app.use("/auth", authRoutes);
 // dashboard
 // app.use("api/dashboard", dashboardRoutes);
 
