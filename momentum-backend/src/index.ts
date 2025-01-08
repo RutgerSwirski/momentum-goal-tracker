@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
-import mongoose from "mongoose";
 import express, { Request, Response } from "express";
-import exampleRoute from "./routes/example";
+import mongoose from "mongoose";
 import passport from "passport";
 import authRoutes from "./routes/auth";
 

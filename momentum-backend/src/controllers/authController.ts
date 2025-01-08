@@ -1,10 +1,8 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import User from "../models/User";
 
-//signup
-
-exports.signup = async (req: any, res: any) => {
+const signup = async (req: any, res: any) => {
   const { name, email, password } = req.body;
 
   try {
@@ -14,11 +12,15 @@ exports.signup = async (req: any, res: any) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    if (!password) {
+      return res.status(400).json({ message: "Password is required" });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = new User({ name, email, password: hashedPassword });
 
     await user.save();
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
       expiresIn: "1h",
     });
 
@@ -28,8 +30,7 @@ exports.signup = async (req: any, res: any) => {
   }
 };
 
-// Login
-exports.login = async (req: any, res: any) => {
+const login = async (req: any, res: any) => {
   const { email, password } = req.body;
 
   if (!email || !password)
@@ -41,11 +42,11 @@ exports.login = async (req: any, res: any) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    const isPasswordCorrect = await bcrypt.compare(password, user.password!);
     if (!isPasswordCorrect)
       return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
       expiresIn: "1h",
     });
     res.status(200).json({ user, token });
@@ -53,3 +54,5 @@ exports.login = async (req: any, res: any) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+export { signup, login };

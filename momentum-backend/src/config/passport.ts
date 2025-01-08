@@ -1,12 +1,13 @@
-const passport = require("passport");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
+import passport from "passport";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import User from "../models/User";
 
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/api/google/callback",
+      clientID: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      callbackURL: "/auth/google/callback",
     },
     async (
       accessToken: string,
@@ -15,23 +16,18 @@ passport.use(
       done: any
     ) => {
       try {
-        const existingUser = await User.findOne({ googleId: profile.id });
+        // Find or create the user in your database
+        const user =
+          (await User.findOne({ googleId: profile.id })) ||
+          (await User.create({
+            googleId: profile.id,
+            name: profile.displayName,
+            email: profile.emails[0].value,
+          }));
 
-        if (existingUser) {
-          return done(null, existingUser);
-        }
-
-        const user = new User({
-          googleId: profile.id,
-          name: profile.displayName,
-          email: profile.emails[0].value,
-          avatar: profile.photos[0].value,
-        });
-
-        await user.save();
         done(null, user);
-      } catch (error) {
-        done(error, null);
+      } catch (err) {
+        done(err, null);
       }
     }
   )
