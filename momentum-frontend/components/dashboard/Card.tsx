@@ -1,6 +1,6 @@
 const Card = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="border p-6 rounded-md bg-white grow flex flex-col gap-2">
+    <div className="border p-6 rounded-xl bg-white grow flex flex-col gap-4">
       {children}
     </div>
   );

@@ -6,11 +6,6 @@ import DashboardTable from "@/components/dashboard/DashboardTable";
 import AuthorizedLayout from "@/components/layout/AuthorizedLayout";
 
 const DashboardPage = () => {
-  const level = 5;
-  const xp = 400;
-  const xpToNextLevel = 1000;
-  const xpProgress = Math.round((xp / xpToNextLevel) * 100);
-
   const badges = [
     {
       name: "Top Achiever",
@@ -36,7 +31,6 @@ const DashboardPage = () => {
     { name: "Rutger", goals: 12, level: 5 },
     { name: "Alice", goals: 10, level: 3 },
     { name: "Bob", goals: 8, level: 2 },
-    { name: "John", goals: 6, level: 2 },
   ];
 
   const challenges = [
@@ -72,52 +66,83 @@ const DashboardPage = () => {
           {/* Row of 4 Cards */}
           <div className="flex gap-8">
             <Card>
-              <p className="text-4xl font-semibold">12</p>
-              <h3 className="text-lg">Goals Completed</h3>
-            </Card>
-            <Card>
-              <p className="text-4xl font-semibold">3</p>
-              <h3 className="text-lg">Goals in Progress</h3>
+              <h3>Progress Tracker</h3>
+
+              <div className="flex items-center gap-4">
+                <span>icon</span>
+
+                <div className="flex flex-col gap-2">
+                  <span>Graph</span>
+
+                  <span className="text-sm text-gray-600">
+                    3/5 goals completed this week, 60% completion rate
+                  </span>
+                </div>
+              </div>
             </Card>
 
             <Card>
-              <p className=" text-4xl font-semibold">
-                80th <span className="text-base">out of 1000+ users</span>
-              </p>
-              <h3 className="text-lg ">Rank in Community Leaderboard</h3>
+              <h3 className="text-lg font-semibold uppercase">
+                Task of the Day
+              </h3>
+
+              <div className="flex items-center gap-4">
+                <span>icon</span>
+
+                <div className="flex flex-col gap-2">
+                  <p className="text-xl font-semibold">
+                    Plan and wireframe portfolio site - 2 hours
+                  </p>
+
+                  <p>Description</p>
+
+                  {/* motivational quote */}
+                  <div className="flex items-center gap-2">
+                    <span>icon</span>
+                    <p className="text-sm">
+                      "The secret of getting ahead is getting started."
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <span className="text-sm text-red-500 bg-red-100 px-2 py-1 rounded-full w-fit font-semibold">
+                  High priority task, due by 5pm
+                </span>
+                {/* task is a part of creating portfolio */}
+                <span className="bg-teal-100 text-teal-700 px-2 py-1 rounded-full text-sm">
+                  build portfolio
+                </span>
+
+                {/* task is part of getting a job */}
+                <span className="bg-teal-100 text-teal-700 px-2 py-1 rounded-full text-sm">
+                  get a job
+                </span>
+              </div>
+
+              <button>
+                <span className="text-sm text-green-600">Complete</span>
+              </button>
             </Card>
 
             <Card>
-              <p className="text-4xl font-semibold">
-                5 <span className="text-base">days</span>
-              </p>
-              <h3 className="text-lg">Streak</h3>
-              <h4 className="text-sm text-gray-600">
-                Keep it up! Your current highscore is 12 days.
-              </h4>
+              <h3 className="text-lg font-semibold uppercase">Daily Streak</h3>
+
+              <div className="flex items-center gap-4">
+                <span>icon</span>
+                <p className="text-4xl font-semibold">5</p>
+              </div>
+              <span className="text-sm text-gray-600">
+                Day streak, come back tomorrow to keep it going!
+              </span>
+
+              <span className="text-sm font-semibold text-green-500">
+                19% more productive than last week
+              </span>
             </Card>
           </div>
           <div className="flex gap-8">
-            <DashboardTable
-              tasks={[
-                {
-                  name: "Build Portfolio",
-                  goal: "Get a job",
-                  priority: "High",
-                },
-                {
-                  name: "Write Blog Post",
-                  goal: "Share knowledge",
-                  priority: "Medium",
-                },
-                {
-                  name: "Learn TypeScript",
-                  goal: "Get better at types",
-                  priority: "Low",
-                },
-              ]}
-            />
-
             <Card>
               <h3 className="text-xl font-semibold">Leaderboard</h3>
               <ul className="space-y-0">
@@ -156,60 +181,100 @@ const DashboardPage = () => {
                   </li>
                 ))}
               </ul>
+
+              <button className="text-teal-500 hover:underline">See All</button>
             </Card>
+            <DashboardTable
+              tasks={[
+                {
+                  name: "Build Portfolio",
+                  goal: "Get a job",
+                  priority: "High",
+                },
+                {
+                  name: "Write Blog Post",
+                  goal: "Share knowledge",
+                  priority: "Medium",
+                },
+                {
+                  name: "Learn TypeScript",
+                  goal: "Get better at types",
+                  priority: "Low",
+                },
+              ]}
+            />
           </div>
 
-          {/* Two Columns */}
-          <div className="flex gap-8">
-            <div className=" flex flex-col gap-8">
-              <Card>
-                <h3 className="text-xl font-semibold">Tips for You</h3>
-                <p className="mt-4">
-                  "You're 80% done with your current goals! Keep it up!"
+          <Card>
+            <h3 className="text-xl font-semibold">Community Feed</h3>
+
+            <div className="flex flex-col gap-4">
+              <div className="flex  flex-col gap-4 border-b py-4">
+                <div className="flex gap-4">
+                  <span className="text-2xl">🎉</span>
+                  <p>
+                    <span className="font-semibold">Alice</span> just completed
+                    10 goals! 🏆
+                  </p>
+                </div>
+
+                <div className="flex gap-4">
+                  <button>
+                    <span className="text-sm text-gray-600">Like</span>
+                  </button>
+
+                  <button>
+                    <span className="text-sm text-gray-600">Comment</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <span className="text-2xl">🔥</span>
+                <p>
+                  <span className="font-semibold">Bob</span> is on a 7-day
+                  streak!
                 </p>
+              </div>
 
-                <button className="text-sm">
-                  Next Tip <span>➡️</span>
-                </button>
-              </Card>
-
-              <Card>
-                <h3 className="text-xl font-semibold">Recent Activity</h3>
-                <ul className="mt-4 space-y-2">
-                  <li>✅ Completed Goal: Build Portfolio</li>
-                  <li>➕ Added Task: Write Blog Post</li>
-                  <li>🕒 Updated Deadline: Learn TypeScript</li>
-                </ul>
-              </Card>
+              <div className="flex items-center gap-4">
+                <span className="text-2xl">🎯</span>
+                <p>
+                  <span className="font-semibold">Charlie</span> just set a new
+                  goal to learn React!
+                </p>
+              </div>
             </div>
 
-            <Card>
-              <h3 className="text-lg font-semibold mb-4">Your Badges</h3>
-              <div className="flex gap-4 flex-wrap">
-                {badges.map((badge, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-col items-center text-center"
-                    title={badge.description}
-                  >
-                    <img
-                      src={badge.icon}
-                      alt={badge.name}
-                      className={`w-16 h-16 ${
-                        badge.locked ? "opacity-50 grayscale" : ""
-                      }`}
-                    />
-                    <p className="text-sm mt-2">{badge.name}</p>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </div>
+            <button className="text-teal-500 hover:underline">View All</button>
+          </Card>
         </div>
 
         <div className="w-1/4 flex flex-col gap-8">
           <Card>
-            <h3 className="text-lg font-semibold">Suggested Challenges</h3>
+            <h3 className="text-lg font-semibold">Achievements</h3>
+
+            <div className="flex gap-4 flex-wrap">
+              {badges.map((badge, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col items-center text-center"
+                  title={badge.description}
+                >
+                  <img
+                    src={badge.icon}
+                    alt={badge.name}
+                    className="w-12 h-12"
+                  />
+                  <p className="text-sm mt-2">{badge.name}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card>
+            <h3>Challenges</h3>
+
             <ul className="flex flex-col gap-2">
               {challenges.map((challenge, index) => (
                 <li
@@ -238,18 +303,6 @@ const DashboardPage = () => {
                   </div>
                 </li>
               ))}
-            </ul>
-          </Card>
-
-          <Card>
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-semibold">Notifications</h3>
-              <span className="text-sm">mark all as read</span>
-            </div>
-            <ul className="mt-4 space-y-2">
-              <li>⚠️ Your goal 'Build Portfolio' is due tomorrow.</li>
-              <li>⏳ You haven’t logged progress for 'Learn TypeScript'.</li>
-              <li>🛑 2 tasks are overdue. Catch up today!</li>
             </ul>
           </Card>
 

@@ -11,7 +11,7 @@ type DashboardTableProps = {
 const DashboardTable = ({ tasks }: DashboardTableProps) => {
   return (
     <Card>
-      <h3 className="text-xl font-semibold mb-4">Tasks for Today</h3>
+      <h3 className="text-xl font-semibold mb-4">Your Tasks</h3>
       <table className="w-full table-auto border-collapse rounded-lg ">
         <thead>
           <tr className="bg-gray-100">
