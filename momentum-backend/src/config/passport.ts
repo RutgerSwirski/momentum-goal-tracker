@@ -16,13 +16,15 @@ passport.use(
       done: any
     ) => {
       try {
+        const { id, displayName, emails, photos } = profile;
         // Find or create the user in your database
         const user =
-          (await User.findOne({ googleId: profile.id })) ||
+          (await User.findOne({ googleId: id })) ||
           (await User.create({
-            googleId: profile.id,
-            name: profile.displayName,
-            email: profile.emails[0].value,
+            googleId: id,
+            name: displayName,
+            email: emails[0].value,
+            profilePicture: photos[0]?.value, // Save profile picture URL
           }));
 
         done(null, user);

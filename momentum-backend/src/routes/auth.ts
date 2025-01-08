@@ -29,13 +29,11 @@ router.get(
       return res.status(400).json({ message: "Authentication failed" });
     }
 
-    console.log(req.user);
-
     // Generate a JWT token for the user
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET!, {
       expiresIn: "1h",
     });
-    res.redirect(`/dashboard?token=${token}`);
+    res.redirect(`http://localhost:3000/dashboard?token=${token}`);
   }
 );
 

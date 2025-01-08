@@ -4,7 +4,7 @@ type SecondaryButtonProps = {
 
 const SecondaryButton = ({ text }: SecondaryButtonProps) => {
   return (
-    <button className="px-6 py-3 bg-primary_sky_blue rounded-lg text-button">
+    <button className="px-6 py-3 bg-primary_sky_blue rounded-lg text-white text-button">
       {text}
     </button>
   );
