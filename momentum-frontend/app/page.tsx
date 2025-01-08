@@ -2,7 +2,7 @@
 
 import LandingAbout from "@/components/landing/About";
 import LandingHero from "@/components/landing/Hero";
-import Navbar from "@/components/shared/navbar/Navbar";
+import Navbar from "@/components/navbar/Navbar";
 
 const LandingPage = () => {
   return (
