@@ -15,11 +15,7 @@ const GoalsPage = () => {
   return (
     <AuthorizedLayout>
       <h1>Goals</h1>
-      <ul>
-        {data?.map((goal: any) => (
-          <li key={goal._id}>{goal.name}</li>
-        ))}
-      </ul>
+      <ul></ul>
     </AuthorizedLayout>
   );
 };

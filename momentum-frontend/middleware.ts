@@ -9,7 +9,7 @@ export async function middleware(req: Request) {
   }
 
   try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const apiUrl = process.env.NEXT_PUBLIC_DOCKER_API_URL;
     if (!apiUrl) throw new Error("MOMENTUM_API_URL is not defined");
 
     const res = await fetch(`${apiUrl}/auth/validate`, {
