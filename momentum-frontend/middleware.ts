@@ -1,40 +1,37 @@
 import { NextResponse } from "next/server";
 
 export async function middleware(req: Request) {
-  const cookieHeader = req.headers.get("cookie");
-
-  const cookies = cookieHeader
-    ? Object.fromEntries(cookieHeader.split("; ").map((c) => c.split("=")))
-    : {};
-
-  const token = cookies["authToken"];
+  const token = req.cookies.get("authToken")?.value;
 
   if (!token) {
+    console.log("No token found, redirecting to login.");
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/validate`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    if (!apiUrl) throw new Error("MOMENTUM_API_URL is not defined");
+
+    const res = await fetch(`${apiUrl}/auth/validate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (!res.ok) {
-      throw new Error(`API responded with status ${res.status}`);
+      console.error("Invalid token or failed validation.");
+      return NextResponse.redirect(new URL("/login", req.url));
     }
   } catch (err) {
-    console.error("Fetch failed:", err);
+    console.error("Middleware fetch failed:", err);
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: "/dashboard", // Protect dashboard route
+  matcher: ["/dashboard"],
 };

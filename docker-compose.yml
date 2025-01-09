@@ -9,6 +9,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - mongo_data:/data/db
+    networks:
+      - momentum-network
 
 
   frontend:
@@ -21,9 +23,12 @@ services:
       - ./momentum-frontend:/app
       - /app/node_modules
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:5000
+      NEXT_PUBLIC_API_URL: http://backend:5000
     depends_on:
       - backend
+    networks:
+      - momentum-network
+
 
   backend:
     build:
@@ -40,6 +45,12 @@ services:
       MONGO_URI: mongodb://root:example@momentum_db:27017
     depends_on:
       - momentum_db
+    networks:
+      - momentum-network
 
 volumes:
   mongo_data:
+
+networks:
+  momentum-network:
+    driver: bridge
