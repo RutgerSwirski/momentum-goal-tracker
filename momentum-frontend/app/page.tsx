@@ -1,7 +1,7 @@
 // import Image from "next/image";
 
-import LandingAbout from "@/components/landing/About";
-import LandingHero from "@/components/landing/Hero";
+import LandingAbout from "@/app/components/About";
+import LandingHero from "@/app/components/Hero";
 import Navbar from "@/components/navbar/Navbar";
 
 const LandingPage = () => {

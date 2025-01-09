@@ -3,10 +3,10 @@
 // import NavbarLink from "./NavbarLink";
 import Image from "next/image";
 import Link from "next/link";
-import NavbarLink from "../navbar/NavbarLink";
+import NavbarLink from "../../components/navbar/NavbarLink";
 import { useAtom } from "jotai";
-import { sidebarExpandedAtom } from "./sidebarAtoms";
-import PrimaryButton from "../buttons/PrimaryButton";
+import { sidebarExpandedAtom } from "./SidebarAtoms";
+import PrimaryButton from "../../components/buttons/PrimaryButton";
 
 const AuthorizedSidebar = () => {
   // create an atom to remember the user preference for the sidebar
@@ -39,7 +39,7 @@ const AuthorizedSidebar = () => {
       <div className="flex flex-col justify-between h-full">
         <ul className="flex flex-col flex-shrink-0 text-white gap-6">
           <NavbarLink href="/dashboard">Dashboard</NavbarLink>
-          <NavbarLink href="/my-goals">My Goals</NavbarLink>
+          <NavbarLink href="/goals">My Goals</NavbarLink>
           <NavbarLink href="/community">Community</NavbarLink>
           <NavbarLink href="/achievements">Achievements</NavbarLink>
           <NavbarLink href="/calendar">Calendar</NavbarLink>
