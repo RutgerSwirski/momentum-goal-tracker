@@ -5,11 +5,13 @@ FROM node:18
 WORKDIR /app
 
 # Copy package.json and install dependencies
-COPY package.json .
+COPY package*.json /.
+
 RUN npm install
 
 # Copy the rest of the frontend files
 COPY . .
+
 
 # Expose the frontend port
 EXPOSE 3000

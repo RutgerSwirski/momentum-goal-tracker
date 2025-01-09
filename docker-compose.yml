@@ -21,7 +21,6 @@ services:
       - "3000:3000"
     volumes:
       - ./momentum-frontend:/app
-      - /app/node_modules
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:5000
       NEXT_PUBLIC_DOCKER_API_URL: http://backend:5000
@@ -39,7 +38,6 @@ services:
       - "5000:5000"
     volumes:
       - ./momentum-backend:/app
-      - /app/node_modules
     command: ["npx", "nodemon", "--watch", "./src", "--ext", "js,ts,json", "--exec", "npx ts-node ./src/index.ts"]
     environment:
       NODE_ENV: development
@@ -48,6 +46,8 @@ services:
       - momentum_db
     networks:
       - momentum-network
+    env_file:
+      - ./momentum-backend/.env
 
 volumes:
   mongo_data:

@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import passport from "passport";
 import authRoutes from "./routes/auth";
 import goalRoutes from "./routes/goal";
+import recommendationsRoutes from "./routes/recommendations";
 import cors from "cors";
 
 dotenv.config();
@@ -27,10 +28,10 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/auth", authRoutes);
-// dashboard
-// app.use("api/dashboard", dashboardRoutes);
-// goals
+
 app.use("/goals", goalRoutes);
+
+app.use("/recommendations", recommendationsRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI || "mongodb://localhost:27017")

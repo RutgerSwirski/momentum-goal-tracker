@@ -1,6 +1,7 @@
 "use client";
 
 import AuthorizedLayout from "@/components/layout/AuthorizedLayout";
+import NewGoalModal from "@/features/goals/NewGoalModal";
 import { fetchGoals } from "@/services/goals/goalService";
 import { useQuery } from "@tanstack/react-query";
 
@@ -16,6 +17,7 @@ const GoalsPage = () => {
     <AuthorizedLayout>
       <h1>Goals</h1>
       <ul></ul>
+      <NewGoalModal />
     </AuthorizedLayout>
   );
 };

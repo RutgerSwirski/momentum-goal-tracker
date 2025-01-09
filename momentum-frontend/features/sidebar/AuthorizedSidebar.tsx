@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import NavbarLink from "../../components/navbar/NavbarLink";
 import { useAtom } from "jotai";
-import { sidebarExpandedAtom } from "./SidebarAtoms";
+import { sidebarExpandedAtom } from "./sidebarAtoms";
 import PrimaryButton from "../../components/buttons/PrimaryButton";
 
 const AuthorizedSidebar = () => {
