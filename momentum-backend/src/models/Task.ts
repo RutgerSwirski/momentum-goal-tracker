@@ -20,8 +20,8 @@ const taskSchema = new mongoose.Schema(
     dueDate: {
       type: Date,
       validate: {
-        validator: function (v) {
-          return v >= Date.now();
+        validator: function (v: Date) {
+          return v >= new Date();
         },
         message: "Due date must be in the future",
       },

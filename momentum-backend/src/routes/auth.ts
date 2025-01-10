@@ -41,7 +41,7 @@ router.get(
       secure: process.env.NODE_ENV === "production",
       maxAge: 3600000,
       sameSite: "lax",
-      path: "/dashboard",
+      path: "/",
     });
 
     res.redirect(`http://localhost:3000/dashboard`);

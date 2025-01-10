@@ -36,10 +36,10 @@ const Modal = ({
       {/* Modal Content */}
 
       <div
-        className="relative max-w-lg w-full "
+        className="relative max-w-4xl w-full "
         onClick={(e) => e.stopPropagation()}
       >
-        <DialogPanel className="relative max-w-lg w-full rounded-lg bg-white p-6 shadow-lg">
+        <DialogPanel className="relative max-w-4xl w-full rounded-lg bg-white p-6 shadow-lg">
           {/* Title */}
           {title && (
             <DialogTitle className="text-lg font-bold text-gray-900">

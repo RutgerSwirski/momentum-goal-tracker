@@ -1,6 +1,7 @@
 "use client";
 
 import Modal from "@/components/ui/Modal";
+import axiosInstance from "@/utils/axiosInstance";
 import {
   Button,
   Description,
@@ -12,6 +13,7 @@ import {
   Label,
   Textarea,
 } from "@headlessui/react";
+import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useState } from "react";
 
@@ -25,9 +27,20 @@ const NewGoalModal = () => {
     tasks: [],
   });
 
-  const [isOpen, setIsOpen] = useState(false);
-
   const [step, setStep] = useState(1);
+
+  const { data: recommendedTasks } = useQuery({
+    queryKey: ["taskRecommendations", newGoal.name],
+    queryFn: async () => {
+      const response = await axiosInstance.post("/recommendations/tasks", {
+        goal: newGoal.name,
+      });
+      return response.data;
+    },
+    enabled: newGoal.name.length > 0 && step === 2,
+    // dont refetch if data is already available
+    staleTime: Infinity,
+  });
 
   const [newTask, setNewTask] = useState({
     name: "",
@@ -36,25 +49,7 @@ const NewGoalModal = () => {
     steps: [],
   });
 
-  const handleAddStep = () => {
-    if (!newStep.name) return alert("Step name is required");
-    if (newStep.type === "one-off" && !newStep.dueDate)
-      return alert("Please specify a due date for one-time steps");
-
-    setTasks((prev) =>
-      prev.map((task, index) =>
-        index === selectedTaskIndex
-          ? { ...task, steps: [...task.steps, newStep] }
-          : task
-      )
-    );
-    setNewStep({
-      name: "",
-      type: "one-off",
-      dueDate: "",
-      frequency: "daily",
-    }); // Reset new step state
-  };
+  const [selectedTaskIndex, setSelectedTaskIndex] = useState(0);
 
   const [tasks, setTasks] = useState([
     {
@@ -76,7 +71,40 @@ const NewGoalModal = () => {
     },
   ]);
 
-  const [selectedTaskIndex, setSelectedTaskIndex] = useState(0);
+  const { data: recommendedSteps } = useQuery({
+    queryKey: ["stepRecommendations", tasks[selectedTaskIndex].name],
+    queryFn: async () => {
+      const response = await axiosInstance.post("/recommendations/steps", {
+        task: tasks[selectedTaskIndex].name,
+      });
+      return response.data;
+    },
+    // enabled if task is selected and step is 3
+    enabled: tasks[selectedTaskIndex] && step === 3,
+    staleTime: Infinity,
+  });
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleAddStep = () => {
+    if (!newStep.name) return alert("Step name is required");
+    if (newStep.type === "one-off" && !newStep.dueDate)
+      return alert("Please specify a due date for one-time steps");
+
+    setTasks((prev) =>
+      prev.map((task, index) =>
+        index === selectedTaskIndex
+          ? { ...task, steps: [...task.steps, newStep] }
+          : task
+      )
+    );
+    setNewStep({
+      name: "",
+      type: "one-off",
+      dueDate: "",
+      frequency: "daily",
+    }); // Reset new step state
+  };
 
   const handleAddTask = () => {
     setTasks((prev) => [...prev, newTask]);
@@ -127,7 +155,7 @@ const NewGoalModal = () => {
               >
                 Start by giving your goal a name and a description
               </Description>
-              <div className="w-full max-w-lg  mt-4">
+              <div className="w-full  mt-4">
                 <Fieldset className="space-y-6 rounded-xl ">
                   <Field>
                     <Label className="text-sm/6 font-medium text-gray-900">
@@ -248,7 +276,49 @@ const NewGoalModal = () => {
                 achievable
               </Description>
 
-              <div className="w-full max-w-lg mt-4 space-y-6">
+              <div className="w-full mt-4 space-y-6">
+                {/* recommended tasks list */}
+                <div>
+                  <h3 className="text-md font-semibold text-gray-900">
+                    Recommended Tasks
+                  </h3>
+                  <ul className="space-y-2">
+                    {recommendedTasks?.tasks.map((task, index) => (
+                      <li
+                        key={index}
+                        className={clsx(
+                          "flex justify-between items-center bg-gray-50 p-3 rounded-lg shadow-sm",
+                          {
+                            "opacity-50": tasks.some((t) => t.name === task),
+                          }
+                        )}
+                      >
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            {task}
+                          </p>
+                        </div>
+                        <button
+                          disabled={tasks.some((t) => t.name === task)}
+                          onClick={() =>
+                            setTasks((prev) => [
+                              ...prev,
+                              {
+                                name: task,
+                                description: "",
+                                dueDate: "",
+                                steps: [],
+                              },
+                            ])
+                          }
+                          className="text-sm text-blue-500 hover:underline"
+                        >
+                          Add
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 {/* Existing Tasks List */}
                 <div>
                   <h3 className="text-md font-semibold text-gray-900">
@@ -365,46 +435,85 @@ const NewGoalModal = () => {
           )}
 
           {step === 3 && (
-            <>
+            <div className="space-y-6">
               <DialogTitle className="text-lg font-bold text-gray-900">
-                Add steps for your tasks
+                Add Steps for Your Tasks
               </DialogTitle>
-              <Description className="mt-2 text-sm text-gray-600">
-                Select a task to add steps and specify whether each step is
+              <Description className="text-sm text-gray-600">
+                Select a task and add steps. Specify whether each step is
                 one-time or recurring.
               </Description>
 
               {/* Task Selector */}
-              <div className="mt-4">
-                <label className="text-sm font-medium text-gray-900">
-                  Select a Task
-                </label>
-                <select
-                  value={selectedTaskIndex}
-                  onChange={(e) =>
-                    setSelectedTaskIndex(parseInt(e.target.value))
-                  }
-                  className="mt-2 block w-full rounded-lg border bg-gray-100 py-2 px-3 text-sm text-gray-800 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                >
-                  {tasks.map((task, index) => (
-                    <option key={index} value={index}>
-                      {task.name}
-                    </option>
-                  ))}
-                </select>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div>
+                  <label className="block text-sm font-medium text-gray-900">
+                    Select a Task
+                  </label>
+                  <select
+                    value={selectedTaskIndex}
+                    onChange={(e) =>
+                      setSelectedTaskIndex(parseInt(e.target.value))
+                    }
+                    className="mt-2 block w-full rounded-lg border bg-gray-100 py-2 px-3 text-sm text-gray-800 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                  >
+                    {tasks.map((task, index) => (
+                      <option key={index} value={index}>
+                        {task.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Recommended Steps */}
+                <div>
+                  <h3 className="text-sm font-medium text-gray-900">
+                    Recommended Steps
+                  </h3>
+                  <ul className="mt-2 max-h-40 space-y-2 overflow-y-auto">
+                    {recommendedSteps?.steps.map((step, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center justify-between bg-gray-50 p-2 rounded-lg"
+                      >
+                        <p className="text-sm text-gray-800 truncate">{step}</p>
+                        <button
+                          onClick={() =>
+                            setTasks((prev) =>
+                              prev.map((task, i) =>
+                                i === selectedTaskIndex
+                                  ? {
+                                      ...task,
+                                      steps: [
+                                        ...task.steps,
+                                        { name: step, type: "one-off" },
+                                      ],
+                                    }
+                                  : task
+                              )
+                            )
+                          }
+                          className="text-sm text-blue-500 hover:underline"
+                        >
+                          Add
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
               {/* Steps for Selected Task */}
               {tasks[selectedTaskIndex] && (
-                <div className="mt-6 space-y-4">
-                  <h3 className="text-sm font-semibold text-gray-800">
+                <div>
+                  <h3 className="text-sm font-medium text-gray-900">
                     Steps for: {tasks[selectedTaskIndex].name}
                   </h3>
-                  <ul className="space-y-2">
+                  <ul className="mt-2 max-h-40 space-y-2 overflow-y-auto">
                     {tasks[selectedTaskIndex].steps.map((step, index) => (
                       <li
                         key={index}
-                        className="flex justify-between items-center bg-gray-50 p-3 rounded-lg"
+                        className="flex items-center justify-between bg-gray-50 p-2 rounded-lg"
                       >
                         <div>
                           <p className="text-sm text-gray-800">{step.name}</p>
@@ -430,98 +539,97 @@ const NewGoalModal = () => {
                       </li>
                     ))}
                   </ul>
-
-                  {/* Add New Step */}
-                  <div className="mt-4 space-y-4">
-                    <Fieldset className="space-y-4">
-                      <Field>
-                        <Label className="text-sm font-medium text-gray-900">
-                          Step Name
-                        </Label>
-                        <Input
-                          value={newStep.name}
-                          onChange={(e) =>
-                            setNewStep((prev) => ({
-                              ...prev,
-                              name: e.target.value,
-                            }))
-                          }
-                          placeholder="e.g. Apply for 2 Upwork posts a day"
-                          className="mt-2 block w-full rounded-lg border bg-gray-100 py-2 px-3 text-sm text-gray-800 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                        />
-                      </Field>
-
-                      <Field>
-                        <Label className="text-sm font-medium text-gray-900">
-                          Step Type
-                        </Label>
-                        <select
-                          value={newStep.type}
-                          onChange={(e) =>
-                            setNewStep((prev) => ({
-                              ...prev,
-                              type: e.target.value,
-                            }))
-                          }
-                          className="mt-2 block w-full rounded-lg border bg-gray-100 py-2 px-3 text-sm text-gray-800 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                        >
-                          <option value="one-off">One-time</option>
-                          <option value="recurring">Recurring</option>
-                        </select>
-                      </Field>
-
-                      {/* Conditional Inputs Based on Step Type */}
-                      {newStep.type === "one-off" && (
-                        <Field>
-                          <Label className="text-sm font-medium text-gray-900">
-                            Due Date
-                          </Label>
-                          <Input
-                            type="date"
-                            value={newStep.dueDate}
-                            onChange={(e) =>
-                              setNewStep((prev) => ({
-                                ...prev,
-                                dueDate: e.target.value,
-                              }))
-                            }
-                            className="mt-2 block w-full rounded-lg border bg-gray-100 py-2 px-3 text-sm text-gray-800 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                          />
-                        </Field>
-                      )}
-                      {newStep.type === "recurring" && (
-                        <Field>
-                          <Label className="text-sm font-medium text-gray-900">
-                            Frequency
-                          </Label>
-                          <select
-                            value={newStep.frequency}
-                            onChange={(e) =>
-                              setNewStep((prev) => ({
-                                ...prev,
-                                frequency: e.target.value,
-                              }))
-                            }
-                            className="mt-2 block w-full rounded-lg border bg-gray-100 py-2 px-3 text-sm text-gray-800 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-                          >
-                            <option value="daily">Daily</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="monthly">Monthly</option>
-                          </select>
-                        </Field>
-                      )}
-                    </Fieldset>
-
-                    <button
-                      onClick={handleAddStep}
-                      className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                    >
-                      Add Step
-                    </button>
-                  </div>
                 </div>
               )}
-            </>
+
+              {/* Add New Step */}
+              <div className="border-t pt-4 space-y-4">
+                <Fieldset className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <Field>
+                    <Label className="text-sm font-medium text-gray-900">
+                      Step Name
+                    </Label>
+                    <Input
+                      value={newStep.name}
+                      onChange={(e) =>
+                        setNewStep((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
+                      placeholder="e.g. Apply for 2 Upwork posts a day"
+                      className="mt-1 block w-full rounded-lg border bg-gray-100 py-2 px-3 text-sm text-gray-800 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    />
+                  </Field>
+
+                  <Field>
+                    <Label className="text-sm font-medium text-gray-900">
+                      Step Type
+                    </Label>
+                    <select
+                      value={newStep.type}
+                      onChange={(e) =>
+                        setNewStep((prev) => ({
+                          ...prev,
+                          type: e.target.value,
+                        }))
+                      }
+                      className="mt-1 block w-full rounded-lg border bg-gray-100 py-2 px-3 text-sm text-gray-800 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                    >
+                      <option value="one-off">One-time</option>
+                      <option value="recurring">Recurring</option>
+                    </select>
+                  </Field>
+
+                  {newStep.type === "one-off" && (
+                    <Field>
+                      <Label className="text-sm font-medium text-gray-900">
+                        Due Date
+                      </Label>
+                      <Input
+                        type="date"
+                        value={newStep.dueDate}
+                        onChange={(e) =>
+                          setNewStep((prev) => ({
+                            ...prev,
+                            dueDate: e.target.value,
+                          }))
+                        }
+                        className="mt-1 block w-full rounded-lg border bg-gray-100 py-2 px-3 text-sm text-gray-800 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                      />
+                    </Field>
+                  )}
+                  {newStep.type === "recurring" && (
+                    <Field>
+                      <Label className="text-sm font-medium text-gray-900">
+                        Frequency
+                      </Label>
+                      <select
+                        value={newStep.frequency}
+                        onChange={(e) =>
+                          setNewStep((prev) => ({
+                            ...prev,
+                            frequency: e.target.value,
+                          }))
+                        }
+                        className="mt-1 block w-full rounded-lg border bg-gray-100 py-2 px-3 text-sm text-gray-800 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+                      >
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                      </select>
+                    </Field>
+                  )}
+                </Fieldset>
+
+                <button
+                  onClick={handleAddStep}
+                  className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  Add Step
+                </button>
+              </div>
+            </div>
           )}
 
           <div

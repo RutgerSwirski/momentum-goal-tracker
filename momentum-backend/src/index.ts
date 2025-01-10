@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth";
 import goalRoutes from "./routes/goal";
 import recommendationsRoutes from "./routes/recommendations";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(passport.initialize());
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, TypeScript with Node.js!");

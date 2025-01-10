@@ -6,8 +6,7 @@ interface AuthenticatedRequest extends Request {
 }
 
 const authenticate = (req: any, res: any, next: any) => {
-  console.log(req, "cookies");
-  const token = req.cookies?.token; // Assuming the token is stored in cookies
+  const token = req.cookies?.authToken; // Assuming the token is stored in cookies
   if (!token) return res.status(401).json({ message: "Unauthorized" });
 
   try {

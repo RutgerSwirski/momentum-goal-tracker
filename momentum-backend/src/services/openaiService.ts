@@ -30,9 +30,10 @@ export const generateRecommendations = async (
         {
           role: "system",
           content: `
-            You are Momentum, an AI assistant helping users overcome procrastination and achieve their goals.
-            Inspire and empower users with actionable, step-by-step advice. 
-            Simplify complex goals into manageable tasks while remaining empathetic, practical, and motivating.
+            You are Momentum, an AI assistant focused on helping users achieve their goals. 
+            Provide exactly 5 concise, actionable steps or tasks based on the user's input.
+            Do not add any additional comments or introductory text. 
+            Output should be a numbered list of actions. 
           `,
         },
         {
