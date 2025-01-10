@@ -1,12 +1,15 @@
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
-import mongoose from "mongoose";
 import passport from "passport";
 import authRoutes from "./routes/auth";
 import goalRoutes from "./routes/goal";
 import recommendationsRoutes from "./routes/recommendations";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import connectDB from "./db";
+import helmet from "helmet";
 
 dotenv.config();
 
@@ -20,10 +23,43 @@ const corsOptions = {
   credentials: true,
 };
 
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Momentum API",
+      version: "1.0.0",
+      description: "Momentum API Information",
+      contact: {
+        name: "Developer",
+      },
+      servers: [
+        {
+          url: "http://localhost:5000",
+        },
+      ],
+    },
+  },
+  apis: ["./src/routes/*.ts"],
+};
+
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 app.use(cors(corsOptions));
 app.use(passport.initialize());
 app.use(express.json());
 app.use(cookieParser());
+app.use(helmet());
+
+app.use((err: Error, req: Request, res: Response, next: Function) => {
+  console.error(err.stack);
+  res.status(500).json({
+    message: "An unexpected error occurred",
+    error: process.env.NODE_ENV === "development" ? err.message : undefined,
+  });
+});
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, TypeScript with Node.js!");
@@ -35,12 +71,7 @@ app.use("/goals", goalRoutes);
 
 app.use("/recommendations", recommendationsRoutes);
 
-mongoose
-  .connect(process.env.MONGO_URI || "mongodb://localhost:27017")
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((err) => console.error("MongoDB connection error:", err));
+connectDB();
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
