@@ -1,8 +1,8 @@
 "use client";
 
-import Card from "@/features/dashboard/Card";
-import DashboardHeader from "@/features/dashboard/DashboardHeader";
-import DashboardTable from "@/features/dashboard/DashboardTable";
+import Card from "@/app/dashboard/components/Card";
+import DashboardHeader from "@/app/dashboard/components/DashboardHeader";
+import DashboardTable from "@/app/dashboard/components/DashboardTable";
 import AuthorizedLayout from "@/components/layout/AuthorizedLayout";
 
 const DashboardPage = () => {

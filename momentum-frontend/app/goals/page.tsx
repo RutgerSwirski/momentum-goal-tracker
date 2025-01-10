@@ -1,7 +1,7 @@
 "use client";
 
 import AuthorizedLayout from "@/components/layout/AuthorizedLayout";
-import NewGoalModal from "@/features/goals/NewGoalModal";
+import NewGoalModal from "@/features/createNewGoal/NewGoalModal";
 import { fetchGoals } from "@/services/goals/goalService";
 import { useQuery } from "@tanstack/react-query";
 

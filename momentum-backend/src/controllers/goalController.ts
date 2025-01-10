@@ -37,8 +37,6 @@ export const getGoals = async (req: any, res: any) => {
   //get the userId from the decoded user
   const userId = decoded.id;
 
-  console.log(userId, decoded);
-
   try {
     const goals = (await Goal.find({ userId })) || [];
     res.status(200).json(goals);

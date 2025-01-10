@@ -1,9 +1,9 @@
-import AuthHeader from "@/features/auth/AuthHeader";
-import AuthLayout from "@/features/auth/AuthLayout";
-import CheckboxWithLabel from "@/features/auth/CheckboxWithLabel";
-import Divider from "@/features/auth/Divider";
-import InputField from "@/features/auth/InputField";
-import SocialLoginButtons from "@/features/auth/SocialLoginButtons";
+import AuthHeader from "@/features/auth/components/AuthHeader";
+import AuthLayout from "@/features/auth/components/AuthLayout";
+import CheckboxWithLabel from "@/features/auth/components/CheckboxWithLabel";
+import Divider from "@/features/auth/components/Divider";
+import InputField from "@/features/auth/components/InputField";
+import SocialLoginButtons from "@/features/auth/components/SocialLoginButtons";
 import PrimaryButton from "@/components/buttons/PrimaryButton";
 import Link from "next/link";
 

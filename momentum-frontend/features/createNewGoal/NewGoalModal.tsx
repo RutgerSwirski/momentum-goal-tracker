@@ -1,6 +1,6 @@
 "use client";
 
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/modal/Modal";
 import axiosInstance from "@/utils/axiosInstance";
 import {
   Button,
