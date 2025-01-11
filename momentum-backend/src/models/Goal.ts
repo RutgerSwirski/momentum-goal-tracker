@@ -8,7 +8,7 @@ const goalSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
-    title: {
+    name: {
       type: String,
       required: true,
       maxlength: 100,

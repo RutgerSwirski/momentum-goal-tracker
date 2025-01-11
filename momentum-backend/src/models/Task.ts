@@ -8,7 +8,7 @@ const taskSchema = new mongoose.Schema(
       required: true,
       index: true,
     },
-    title: {
+    name: {
       type: String,
       required: true,
       maxlength: 100,
@@ -21,6 +21,8 @@ const taskSchema = new mongoose.Schema(
       type: Date,
       validate: {
         validator: function (v: Date) {
+          if (!v) return true;
+
           return v >= new Date();
         },
         message: "Due date must be in the future",

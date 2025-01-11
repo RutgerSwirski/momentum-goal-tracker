@@ -5,12 +5,12 @@ import Task from "../models/Task";
 import Step from "../models/Step";
 
 export const createGoal = async (req: any, res: any) => {
-  const { title, description, dueDate, priority, status, category } = req.body;
+  const { name, description, dueDate, priority, status, category } = req.body;
 
   try {
     const goal = new Goal({
       userId: req.userId,
-      title,
+      name,
       description,
       dueDate,
       priority,
@@ -57,12 +57,12 @@ export const getGoal = async (req: any, res: any) => {
 
 export const updateGoal = async (req: any, res: any) => {
   const { id } = req.params;
-  const { title, description, dueDate, priority, status, category } = req.body;
+  const { name, description, dueDate, priority, status, category } = req.body;
 
   try {
     await Goal.findOneAndUpdate(
       { userId: req.userId, _id: id },
-      { title, description, dueDate, priority, status, category }
+      { name, description, dueDate, priority, status, category }
     );
     res.status(200).json({ message: "Goal updated" });
   } catch (error) {
@@ -83,16 +83,24 @@ export const deleteGoal = async (req: any, res: any) => {
 
 // create goal with tasks and steps
 export const createGoalWithTasksAndSteps = async (req: any, res: any) => {
+  // get the token from the cookies
+  const token = req.cookies?.authToken;
+
+  //decode the user from the token
+  const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+    id: string;
+  };
+
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const { title, description, dueDate, priority, status, category, tasks } =
+    const { name, description, dueDate, priority, status, category, tasks } =
       req.body;
 
     const goal = new Goal({
-      userId: req.userId,
-      title,
+      userId: decoded.id,
+      name,
       description,
       dueDate,
       priority,
