@@ -23,10 +23,10 @@ import { createGoalWithTasksAndSteps } from "./services/goalWizardService";
 const steps = [GoalStep1, GoalStep2, GoalStep3];
 
 const GoalWizardModal = () => {
-  const goalName = useAtomValue(goalNameAtom);
-  const goalDescription = useAtomValue(goalDescriptionAtom);
-  const goalDueDate = useAtomValue(goalDueDateAtom);
-  const goalPriority = useAtomValue(goalPriorityAtom);
+  const [goalName, setGoalName] = useAtom(goalNameAtom);
+  const [goalDescription, setGoalDescription] = useAtom(goalDescriptionAtom);
+  const [goalDueDate, setGoalDueDate] = useAtom(goalDueDateAtom);
+  const [goalPriority, setGoalPriority] = useAtom(goalPriorityAtom);
   const tasks = useAtomValue(tasksAtom);
 
   const [step, setStep] = useAtom(currentStepAtom);
@@ -51,6 +51,12 @@ const GoalWizardModal = () => {
       queryClient.invalidateQueries({
         queryKey: ["goals"],
       });
+
+      // reset the form fields
+      setGoalName("");
+      setGoalDescription("");
+      setGoalDueDate("");
+      setGoalPriority("");
     },
     onError: (error) => {
       console.error(error);

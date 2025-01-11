@@ -11,17 +11,22 @@ const GoalsPage = () => {
     queryFn: fetchGoals,
   });
 
-  console.log(data);
-
   return (
     <AuthorizedLayout>
-      <h1>Goals</h1>
+      <div className="flex justify-between items-center mb-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Goals</h1>
+          <p className="text-sm text-gray-600">
+            Set your goals and track your progress
+          </p>
+        </div>
 
-      <NewGoalModal />
+        <NewGoalModal />
+      </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {data?.map((goal: any) => (
-          <li
+          <ul
             key={goal._id}
             className="p-4 bg-white rounded-lg shadow-sm border border-gray-200"
           >
@@ -36,7 +41,7 @@ const GoalsPage = () => {
             <p className="text-sm text-gray-600 mt-1">
               Category: {goal.category}
             </p>
-          </li>
+          </ul>
         ))}
       </div>
     </AuthorizedLayout>
