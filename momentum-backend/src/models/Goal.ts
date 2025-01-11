@@ -21,6 +21,8 @@ const goalSchema = new mongoose.Schema(
       type: Date,
       validate: {
         validator: function (v: Date) {
+          if (!v) return true;
+
           return v >= new Date();
         },
         message: "Due date must be in the future",

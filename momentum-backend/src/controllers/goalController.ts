@@ -91,8 +91,8 @@ export const createGoalWithTasksAndSteps = async (req: any, res: any) => {
     id: string;
   };
 
-  const session = await mongoose.startSession();
-  session.startTransaction();
+  // const session = await mongoose.startSession();
+  // session.startTransaction();
 
   try {
     const { name, description, dueDate, priority, status, category, tasks } =
@@ -120,7 +120,7 @@ export const createGoalWithTasksAndSteps = async (req: any, res: any) => {
           goalId,
           userId: req.userId,
         });
-        await task.save({ session });
+        await task.save();
 
         const steps = taskData.steps || [];
 
@@ -132,17 +132,19 @@ export const createGoalWithTasksAndSteps = async (req: any, res: any) => {
               taskId: task._id,
               userId: req.userId,
             });
-            await step.save({ session });
+            await step.save();
           }
         }
       }
     }
 
-    await session.commitTransaction();
-    session.endSession();
+    return res.status(201).json({ message: "Goal created" });
+
+    // await session.commitTransaction();
+    // session.endSession();
   } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
+    // await session.abortTransaction();
+    // session.endSession();
     res.status(500).json({ message: "Something went wrong" });
     console.error(error);
   }

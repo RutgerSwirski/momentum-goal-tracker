@@ -2,9 +2,9 @@ import { model, Schema } from "mongoose";
 
 const stepSchema = new Schema(
   {
-    goalId: {
+    taskId: {
       type: Schema.Types.ObjectId,
-      ref: "Goal",
+      ref: "Task",
       required: true,
       index: true,
     },

@@ -17,7 +17,7 @@ import {
   goalPriorityAtom,
   tasksAtom,
 } from "./state/goalWizardAtoms";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createGoalWithTasksAndSteps } from "./services/goalWizardService";
 
 const steps = [GoalStep1, GoalStep2, GoalStep3];
@@ -39,11 +39,18 @@ const GoalWizardModal = () => {
 
   const CurrentStepComponent = steps[step - 1];
 
+  const queryClient = useQueryClient();
+
   const mutation = useMutation({
     mutationFn: createGoalWithTasksAndSteps,
     onSuccess: () => {
       setIsOpen(false);
       setStep(1);
+
+      // we need to invalidate the goals query to refetch the data
+      queryClient.invalidateQueries({
+        queryKey: ["goals"],
+      });
     },
     onError: (error) => {
       console.error(error);
