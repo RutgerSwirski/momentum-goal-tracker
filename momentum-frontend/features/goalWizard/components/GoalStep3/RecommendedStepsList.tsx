@@ -1,17 +1,17 @@
+import axiosInstance from "@/utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import {
+  addStepAtom,
   selectedTaskAtom,
   selectedTaskIndexAtom,
-  tasksAtom,
 } from "../../state/goalWizardAtoms";
-import axiosInstance from "@/utils/axiosInstance";
 
 const RecommendedStepsList = () => {
   const selectedTaskIndex = useAtomValue(selectedTaskIndexAtom);
   const [selectedTask] = useAtom(selectedTaskAtom);
   const { data: recommendedSteps = [] } = useQuery({
-    queryKey: ["recommendedSteps", selectedTaskIndex],
+    queryKey: ["recommendedSteps", selectedTask.name],
     queryFn: async () => {
       const response = await axiosInstance.post("/recommendations/steps", {
         task: selectedTask.name,
@@ -22,7 +22,14 @@ const RecommendedStepsList = () => {
     enabled: selectedTaskIndex !== null,
   });
 
-  const setTasks = useSetAtom(tasksAtom);
+  const addStep = useSetAtom(addStepAtom);
+
+  const handleAddStepToTask = (step: string) => {
+    addStep({
+      name: step,
+      type: "one-off",
+    });
+  };
 
   return (
     <div>
@@ -36,21 +43,7 @@ const RecommendedStepsList = () => {
             <p className="text-sm text-gray-800 truncate">{step}</p>
             <button
               disabled={selectedTask.steps.some((s) => s.name === step)}
-              onClick={() =>
-                setTasks((prev) =>
-                  prev.map((task, i) =>
-                    i === selectedTaskIndex
-                      ? {
-                          ...task,
-                          steps: [
-                            ...task.steps,
-                            { name: step, type: "one-off" },
-                          ],
-                        }
-                      : task
-                  )
-                )
-              }
+              onClick={() => handleAddStepToTask(step)}
               className="text-sm text-blue-500 hover:underline"
             >
               Add

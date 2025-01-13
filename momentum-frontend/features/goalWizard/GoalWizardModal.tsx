@@ -56,7 +56,7 @@ const GoalWizardModal = () => {
       setGoalName("");
       setGoalDescription("");
       setGoalDueDate("");
-      setGoalPriority("");
+      setGoalPriority("low");
     },
     onError: (error) => {
       console.error(error);

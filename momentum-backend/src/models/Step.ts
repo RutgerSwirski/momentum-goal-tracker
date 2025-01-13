@@ -11,12 +11,12 @@ const stepSchema = new Schema(
     name: {
       type: String,
       required: true,
-      maxlength: 100,
+      maxlength: 1000,
     },
 
     description: {
       type: String,
-      maxlength: 500,
+      maxlength: 5000,
     },
     status: {
       type: String,

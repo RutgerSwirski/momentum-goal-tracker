@@ -51,6 +51,64 @@ export const selectedTaskAtom = atom(
   }
 );
 
+export const selectedTaskStepsAtom = atom(
+  (get) => {
+    const selectedTaskIndex = get(selectedTaskIndexAtom);
+    if (selectedTaskIndex === null) return [];
+    const tasks = get(tasksAtom);
+    return tasks[selectedTaskIndex]?.steps || [];
+  },
+  (
+    get,
+    set,
+    updatedSteps: Array<{
+      name: string;
+      type: "one-off" | "recurring";
+      dueDate?: string;
+      frequency?: "daily" | "weekly" | "monthly";
+    }>
+  ) => {
+    const selectedTaskIndex = get(selectedTaskIndexAtom);
+    if (selectedTaskIndex === null) return; // No task selected
+    set(tasksAtom, (prevTasks) => {
+      const newTasks = [...prevTasks];
+      newTasks[selectedTaskIndex] = {
+        ...newTasks[selectedTaskIndex],
+        steps: updatedSteps,
+      };
+      return newTasks;
+    });
+  }
+);
+
+export const addStepAtom = atom(
+  null,
+  (
+    get,
+    set,
+    newStep: {
+      name: string;
+      type: "one-off" | "recurring";
+      dueDate?: string;
+      frequency?: "daily" | "weekly" | "monthly";
+    }
+  ) => {
+    if (newStep.name === "") {
+      return;
+    }
+    const selectedTaskIndex = get(selectedTaskIndexAtom);
+    if (selectedTaskIndex === null) return;
+    set(tasksAtom, (prevTasks) => {
+      const newTasks = [...prevTasks];
+      newTasks[selectedTaskIndex] = {
+        ...newTasks[selectedTaskIndex],
+        steps: [...newTasks[selectedTaskIndex].steps, newStep],
+      };
+      return newTasks;
+    });
+  }
+);
+
 export const newStepAtom = atom({
   type: "one-off" as "one-off" | "recurring",
   dueDate: "",

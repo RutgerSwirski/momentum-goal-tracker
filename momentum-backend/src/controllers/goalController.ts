@@ -47,8 +47,20 @@ export const getGoals = async (req: any, res: any) => {
 
 export const getGoal = async (req: any, res: any) => {
   const { id } = req.params;
+
+  // get the token from the cookies
+  const token = req.cookies?.authToken;
+
+  //decode the user from the token
+  const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+    id: string;
+  };
+
+  //get the userId from the decoded user
+  const userId = decoded.id;
+
   try {
-    const goal = await Goal.findOne({ userId: req.userId, _id: id });
+    const goal = await Goal.findOne({ userId, _id: id });
     res.status(200).json(goal);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
@@ -76,6 +88,22 @@ export const deleteGoal = async (req: any, res: any) => {
   try {
     await Goal.findOneAndDelete({ userId: req.userId, _id: id });
     res.status(200).json({ message: "Goal deleted" });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const getTasksByGoal = async (req: any, res: any) => {
+  try {
+    const { id } = req.params;
+
+    const tasks = await Task.find({ goalId: id, deleted: false });
+
+    if (!tasks) {
+      return res.status(404).json({ message: "Tasks not found" });
+    }
+
+    return res.status(200).json({ tasks });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
   }

@@ -1,27 +1,31 @@
 import { Field, Fieldset, Input, Label } from "@headlessui/react";
-import { newStepAtom, selectedTaskAtom } from "../../state/goalWizardAtoms";
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
+import { addStepAtom, newStepAtom } from "../../state/goalWizardAtoms";
 
 const AddStepForm = () => {
   // get the new step atom
-  const [selectedTask, setSelectedTask] = useAtom(selectedTaskAtom);
   const [newStep, setNewStep] = useAtom(newStepAtom);
+
+  const addStep = useSetAtom(addStepAtom);
 
   const handleAddStep = () => {
     // add the new step to the list of steps
     // set the new step to an empty object
-    setNewStep((prev) => ({
+    addStep({
+      name: newStep.name,
+      type: newStep.type,
+      dueDate: newStep.dueDate,
+      frequency: newStep.frequency,
+    });
+
+    setNewStep(() => ({
       name: "",
       type: "one-off",
       dueDate: "",
       frequency: "daily",
     }));
-
-    setSelectedTask((prev) => ({
-      ...prev,
-      steps: [...prev.steps, newStep],
-    }));
   };
+
   return (
     <div className="border-t pt-4 space-y-4">
       <Fieldset className="grid grid-cols-1 gap-4 md:grid-cols-2">

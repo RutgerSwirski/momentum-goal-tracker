@@ -6,6 +6,7 @@ import {
   deleteGoal,
   getGoal,
   getGoals,
+  getTasksByGoal,
   updateGoal,
 } from "../controllers/goalController";
 
@@ -20,6 +21,8 @@ router.get("/:id", authenticate, getGoal);
 router.put("/:id", authenticate, updateGoal);
 
 router.delete("/:id", authenticate, deleteGoal);
+
+router.get("/:goalId/tasks", authenticate, getTasksByGoal);
 
 router.post("/consolidated", authenticate, createGoalWithTasksAndSteps);
 
