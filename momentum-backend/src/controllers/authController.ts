@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/User";
 
 export const signup = async (req: any, res: any) => {
-  const { name, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
@@ -17,7 +17,12 @@ export const signup = async (req: any, res: any) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
-    const user = new User({ name, email, password: hashedPassword });
+    const user = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+    });
 
     await user.save();
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
