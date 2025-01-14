@@ -5,7 +5,6 @@ import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
 //   const { data: goal } = useGoal(id);
 //   const { data: tasks } = useTasks(id);
 
-import AuthorizedLayout from "@/components/layout/AuthorizedLayout";
 import axiosInstance from "@/utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
@@ -44,7 +43,7 @@ const GoalsTasksPage = () => {
   });
 
   return (
-    <AuthorizedLayout>
+    <>
       <Breadcrumbs
         customLabels={{
           goal: "Goals",
@@ -64,7 +63,7 @@ const GoalsTasksPage = () => {
           ))}
         </ul>
       </div>
-    </AuthorizedLayout>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
-import AuthorizedSidebar from "../../features/sidebar/AuthorizedSidebar";
+import AuthorizedSidebar from "@/features/sidebar/AuthorizedSidebar";
 
-const AuthorizedLayout = ({ children }: { children: React.ReactNode }) => {
+const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex min-h-screen gap-8">
       {/* Navbar */}
@@ -12,4 +12,4 @@ const AuthorizedLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default AuthorizedLayout;
+export default AuthenticatedLayout;

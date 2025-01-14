@@ -1,9 +1,8 @@
 "use client";
 
-import Card from "@/app/dashboard/components/Card";
-import DashboardHeader from "@/app/dashboard/components/DashboardHeader";
-import DashboardTable from "@/app/dashboard/components/DashboardTable";
-import AuthorizedLayout from "@/components/layout/AuthorizedLayout";
+import Card from "@/app/(authenticated)/dashboard/components/Card";
+import DashboardHeader from "@/app/(authenticated)/dashboard/components/DashboardHeader";
+import DashboardTable from "@/app/(authenticated)/dashboard/components/DashboardTable";
 import axiosInstance from "@/utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 
@@ -67,7 +66,7 @@ const DashboardPage = () => {
   ];
 
   return (
-    <AuthorizedLayout>
+    <>
       {/* Header */}
       <DashboardHeader />
 
@@ -334,7 +333,7 @@ const DashboardPage = () => {
           </Card>
         </div>
       </div>
-    </AuthorizedLayout>
+    </>
   );
 };
 

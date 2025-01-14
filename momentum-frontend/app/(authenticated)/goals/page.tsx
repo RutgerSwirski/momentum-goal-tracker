@@ -1,6 +1,5 @@
 "use client";
 
-import AuthorizedLayout from "@/components/layout/AuthorizedLayout";
 import NewGoalModal from "@/features/goalWizard/GoalWizardModal";
 import { fetchGoals } from "@/services/goals/goalService";
 import { useQuery } from "@tanstack/react-query";
@@ -13,7 +12,7 @@ const GoalsPage = () => {
   });
 
   return (
-    <AuthorizedLayout>
+    <>
       <div>
         <div className="flex justify-between items-center mb-4">
           <div>
@@ -110,11 +109,11 @@ const GoalsPage = () => {
               Category: {goal.category}
             </p>
 
-            <Link href={`/goals/${goal._id}/tasks`}>View Tasks</Link>
+            <Link href={`/goals/${goal._id}`}>View Goal</Link>
           </ul>
         ))}
       </div>
-    </AuthorizedLayout>
+    </>
   );
 };
 
