@@ -95,9 +95,9 @@ export const deleteGoal = async (req: any, res: any) => {
 
 export const getTasksByGoal = async (req: any, res: any) => {
   try {
-    const { id } = req.params;
+    const { goalId } = req.params;
 
-    const tasks = await Task.find({ goalId: id, deleted: false });
+    const tasks = await Task.find({ goalId, deleted: false });
 
     if (!tasks) {
       return res.status(404).json({ message: "Tasks not found" });
