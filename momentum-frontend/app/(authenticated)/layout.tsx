@@ -7,7 +7,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       <AuthorizedSidebar />
 
       {/* Page Content */}
-      <main className="flex-1 py-8 pr-8 bg-neutral_light_grey">{children}</main>
+      <main className="flex-1 py-6 pr-8 bg-neutral_light_grey">{children}</main>
     </div>
   );
 };

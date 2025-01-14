@@ -68,7 +68,7 @@ const GoalPage = () => {
     );
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto">
       {/* Breadcrumbs */}
       <Breadcrumbs
         customLabels={{
