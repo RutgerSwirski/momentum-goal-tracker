@@ -1,12 +1,9 @@
 "use client";
 
 import PrimaryButton from "@/components/buttons/PrimaryButton";
-import AuthHeader from "@/features/auth/components/AuthHeader";
-import AuthLayout from "@/features/auth/components/AuthLayout";
-import CheckboxWithLabel from "@/features/auth/components/CheckboxWithLabel";
-import Divider from "@/features/auth/components/Divider";
-import InputField from "@/features/auth/components/InputField";
-import SocialLoginButtons from "@/features/auth/components/SocialLoginButtons";
+import AuthHeader from "@/app/(auth)/components/AuthHeader";
+import AuthLayout from "@/app/(auth)/components/AuthLayout";
+import CheckboxWithLabel from "@/app/(auth)/components/CheckboxWithLabel";
 import axiosInstance from "@/utils/axiosInstance";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
@@ -14,6 +11,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
+import SocialLoginButtons from "../components/SocialLoginButtons";
+import Divider from "../components/Divider";
+import InputField from "../components/InputField";
 
 const schema = yup.object().shape({
   email: yup

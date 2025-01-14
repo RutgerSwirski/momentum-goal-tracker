@@ -26,6 +26,10 @@ const stepSchema = new Schema(
     dateCompleted: {
       type: Date,
     },
+    dueDate: {
+      type: Date,
+    },
+
     deleted: {
       type: Boolean,
       default: false,

@@ -4,6 +4,8 @@ import {
   createGoalWithTasksAndSteps,
   deleteGoal,
   getGoal,
+  getGoalNextStep,
+  getGoalProgress,
   getGoals,
   getTasksByGoal,
   updateGoal,
@@ -17,6 +19,11 @@ router.get("/", authenticateUser, getGoals);
 router.post("/", authenticateUser, createGoal);
 
 router.get("/:id", authenticateUser, getGoal);
+
+router.get("/:id/progress", authenticateUser, getGoalProgress);
+
+// get goal next step
+router.get("/:id/nextStep", authenticateUser, getGoalNextStep);
 
 router.put("/:id", authenticateUser, updateGoal);
 

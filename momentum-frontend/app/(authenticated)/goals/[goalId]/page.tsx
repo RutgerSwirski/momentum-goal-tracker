@@ -1,15 +1,22 @@
 "use client";
 
-import { useState } from "react";
 import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
+import TaskList from "@/components/lists/TaskList";
 import axiosInstance from "@/utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import GoalMetadata from "./components/GoalMetadata";
+import GoalProgress from "./components/GoalProgress";
+import NextStep from "./components/NextStep";
 
 const GoalPage = () => {
   const { goalId } = useParams();
 
-  const { data: goal, isLoading: goalIsLoading } = useQuery({
+  const {
+    data: goal,
+    isLoading: goalIsLoading,
+    isError: goalIsError,
+  } = useQuery({
     queryKey: ["goal", goalId],
     queryFn: async () => {
       const response = await axiosInstance.get(`/goals/${goalId}`);
@@ -17,8 +24,11 @@ const GoalPage = () => {
     },
   });
 
-  // Fetch tasks for the goal
-  const { data: tasks = [], isLoading: tasksIsLoading } = useQuery({
+  const {
+    data: tasks = [],
+    isLoading: tasksIsLoading,
+    isError: tasksIsError,
+  } = useQuery({
     queryKey: ["tasks", goalId],
     queryFn: async () => {
       const response = await axiosInstance.get(`/goals/${goalId}/tasks`);
@@ -26,94 +36,91 @@ const GoalPage = () => {
     },
   });
 
-  // Track expanded tasks
-  const [expandedTasks, setExpandedTasks] = useState({});
+  const {
+    data: goalProgress,
+    isLoading: goalProgressIsLoading,
+    isError: progressIsError,
+  } = useQuery({
+    queryKey: ["goalProgress", goalId],
+    queryFn: async () => {
+      const response = await axiosInstance.get(`/goals/${goalId}/progress`);
+      return response.data;
+    },
+  });
 
-  // Function to toggle task expansion
-  const toggleTask = (taskId) => {
-    setExpandedTasks((prev) => ({
-      ...prev,
-      [taskId]: !prev[taskId],
-    }));
-  };
+  const {
+    data: goalNextStep,
+    isLoading: goalNextStepIsLoading,
+    isError: nextStepIsError,
+  } = useQuery({
+    queryKey: ["goalNextStep", goalId],
+    queryFn: async () => {
+      const response = await axiosInstance.get(`/goals/${goalId}/nextStep`);
+      return response.data;
+    },
+  });
 
-  if (goalIsLoading) {
-    return <div>Loading...</div>;
-  }
+  if (goalIsLoading)
+    return <div className="p-4 text-center">Loading goal details...</div>;
+  if (goalIsError)
+    return (
+      <div className="p-4 text-center text-red-500">Failed to load goal.</div>
+    );
 
   return (
-    <div>
+    <div className="container mx-auto p-6">
+      {/* Breadcrumbs */}
       <Breadcrumbs
         customLabels={{
           "/goals": "Goals",
           [goalId]: goal?.name,
         }}
       />
-      <h1 className="text-2xl font-bold">{goal?.name}</h1>
-      <p className="text-gray-500">{goal?.description}</p>
 
-      <h2 className="text-xl font-bold mt-4">Tasks</h2>
-      {tasksIsLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <ul>
-          {tasks.map((task) => {
-            return (
-              <li key={task._id} className="mb-2 border-b pb-2">
-                <div
-                  className="flex justify-between items-center cursor-pointer"
-                  onClick={() => toggleTask(task._id)}
-                >
-                  <span>{task.name}</span>
-                  <span>{expandedTasks[task._id] ? "⯆" : "⯈"}</span>
-                </div>
-                {/* {expandedTasks[task._id] && (
-                  <div className="ml-4 mt-2">
-                    {stepsIsLoading ? (
-                      <div>Loading steps...</div>
-                    ) : (
-                      <ul className="list-disc pl-5">
-                        {steps.map(
-                          (step: {
-                            _id: string;
-                            name: string;
-                            status: string;
-                            description: string;
-                            dueDate: string;
-                            notes: string[];
-                            order: number;
-                            dateCompleted: string;
-                            deleted: boolean;
-                          }) => (
-                            <li key={step._id}>
-                              <div>{step.name}</div>
-                              <div>{step.description}</div>
+      {/* Goal Header */}
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">{goal?.name}</h1>
+        <p className="text-gray-500">{goal?.description}</p>
+      </div>
 
-                              <div>{step.status}</div>
+      {/* Main Grid Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Metadata */}
+        <GoalMetadata goal={goal} goalIsLoading={goalIsLoading} />
 
-                              <div>{step.dueDate}</div>
+        {/* Progress */}
+        {!goalProgressIsLoading && !progressIsError && (
+          <GoalProgress goalProgress={goalProgress} />
+        )}
 
-                              <div>{step.notes}</div>
+        {/* Next Step */}
+        {!goalNextStepIsLoading && !nextStepIsError && (
+          <NextStep nextStep={goalNextStep} />
+        )}
+      </div>
 
-                              <div>{step.order}</div>
-
-                              <div>{step.dateCompleted}</div>
-
-                              <div>{step.deleted}</div>
-
-                              <div>{step._id}</div>
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    )}
-                  </div>
-                )} */}
-              </li>
-            );
-          })}
-        </ul>
-      )}
+      {/* Task Section */}
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Tasks</h2>
+        {tasksIsLoading ? (
+          <div className="p-4 text-center">Loading tasks...</div>
+        ) : tasksIsError ? (
+          <div className="p-4 text-center text-red-500">
+            Failed to load tasks.
+          </div>
+        ) : (
+          <TaskList
+            tasks={tasks}
+            onTaskEdit={(task) => console.log("Edit task", task)}
+            onTaskDelete={(taskId) => console.log("Delete task", taskId)}
+            fetchSteps={(taskId) =>
+              axiosInstance
+                .get(`/tasks/${taskId}/steps`)
+                .then((res) => res.data.steps)
+            }
+          />
+        )}
+      </div>
     </div>
   );
 };

@@ -6,8 +6,8 @@ import { useAtom } from "jotai";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import NavbarLink from "../../components/navbar/NavbarLink";
 import { sidebarExpandedAtom } from "./sidebarAtoms";
+import NavbarLink from "@/components/navbar/NavbarLink";
 
 const AuthorizedSidebar = () => {
   // create an atom to remember the user preference for the sidebar

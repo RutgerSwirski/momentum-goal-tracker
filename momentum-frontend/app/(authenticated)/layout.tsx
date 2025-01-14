@@ -1,4 +1,4 @@
-import AuthorizedSidebar from "@/features/sidebar/AuthorizedSidebar";
+import AuthorizedSidebar from "./components/sidebar/AuthorizedSidebar";
 
 const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
   return (

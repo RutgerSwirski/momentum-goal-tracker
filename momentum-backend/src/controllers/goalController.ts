@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
 import Goal from "../models/Goal";
-import mongoose from "mongoose";
-import Task from "../models/Task";
 import Step from "../models/Step";
+import Task from "../models/Task";
 
 export const createGoal = async (req: any, res: any) => {
   const { name, description, dueDate, priority, status, category } = req.body;
@@ -63,6 +62,85 @@ export const getGoal = async (req: any, res: any) => {
     const goal = await Goal.findOne({ userId, _id: id });
     res.status(200).json(goal);
   } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const getGoalProgress = async (req: any, res: any) => {
+  const { id } = req.params;
+
+  try {
+    const tasks = await Task.find({ goalId: id });
+
+    const totalTasks = tasks.length;
+    const completedTasks = tasks.filter(
+      (task) => task.status === "completed"
+    ).length;
+
+    const steps = await Step.find({
+      taskId: { $in: tasks.map((task) => task._id) },
+    });
+
+    const totalSteps = steps.length;
+    const completedSteps = steps.filter(
+      (step) => step.status === "completed"
+    ).length;
+
+    res.status(200).json({
+      totalTasks,
+      completedTasks,
+      totalSteps,
+      completedSteps,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const getGoalNextStep = async (req: any, res: any) => {
+  const { id } = req.params;
+
+  try {
+    // Fetch tasks for the goal
+    const tasks = await Task.find({ goalId: id });
+
+    if (!tasks || tasks.length === 0) {
+      return res.status(404).json({ message: "No tasks found for this goal" });
+    }
+
+    // Fetch the next actionable step (first "pending" step across tasks)
+    const steps = await Step.find({
+      taskId: { $in: tasks.map((task) => task._id) },
+      status: "pending",
+    }).sort({ dueDate: 1, order: 1 }); // Sort by dueDate or other prioritization logic
+
+    if (!steps || steps.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No pending steps found for this goal" });
+    }
+
+    // Match step with its corresponding task
+    const nextStep = steps[0];
+    const task = tasks.find(
+      (task) => task._id.toString() === nextStep.taskId.toString()
+    );
+
+    // Respond with the next actionable step
+    res.status(200).json({
+      step: {
+        stepId: nextStep._id,
+        name: nextStep.name,
+        status: nextStep.status,
+        dueDate: nextStep.dueDate,
+      },
+      task: {
+        taskId: task?._id,
+        name: task?.name,
+      },
+    });
+  } catch (error) {
+    console.error(error); // Log for debugging
     res.status(500).json({ message: "Something went wrong" });
   }
 };
