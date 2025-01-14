@@ -1,16 +1,27 @@
 "use client";
 
 // import NavbarLink from "./NavbarLink";
+import axiosInstance from "@/utils/axiosInstance";
+import { useAtom } from "jotai";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import NavbarLink from "../../components/navbar/NavbarLink";
-import { useAtom } from "jotai";
 import { sidebarExpandedAtom } from "./sidebarAtoms";
-import PrimaryButton from "../../components/buttons/PrimaryButton";
 
 const AuthorizedSidebar = () => {
   // create an atom to remember the user preference for the sidebar
   const [isExpanded, setExpanded] = useAtom(sidebarExpandedAtom);
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post("/auth/logout");
+      router.push("/login");
+    } catch (error) {
+      console.error("Logout failed: ", error);
+    }
+  };
 
   return (
     <aside
@@ -53,7 +64,9 @@ const AuthorizedSidebar = () => {
 
           <NavbarLink href="/help">Help</NavbarLink>
 
-          <NavbarLink href="/logout">Logout</NavbarLink>
+          <button className="text-white" onClick={handleLogout}>
+            Logout
+          </button>
         </ul>
       </div>
     </aside>

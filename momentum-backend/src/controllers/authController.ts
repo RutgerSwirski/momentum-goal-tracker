@@ -25,6 +25,7 @@ export const signup = async (req: any, res: any) => {
     });
 
     await user.save();
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
       expiresIn: "1h",
     });
@@ -87,5 +88,19 @@ export const validateToken = (req: any, res: any) => {
     return res.status(200).json({ valid: true, user: decoded });
   } catch (err) {
     return res.status(401).json({ message: "Invalid token" });
+  }
+};
+
+// logout
+export const logout = (req: any, res: any) => {
+  try {
+    res.clearCookie("authToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
   }
 };

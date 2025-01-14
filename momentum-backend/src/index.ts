@@ -4,12 +4,14 @@ import passport from "passport";
 import authRoutes from "./routes/auth";
 import goalRoutes from "./routes/goal";
 import recommendationsRoutes from "./routes/recommendations";
+import userRoutes from "./routes/user";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import connectDB from "./db";
 import helmet from "helmet";
+import authenticateUser from "./middleware/authenticateUser";
 
 dotenv.config();
 
@@ -67,9 +69,11 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/auth", authRoutes);
 
-app.use("/goals", goalRoutes);
+app.use("/goals", authenticateUser, goalRoutes);
 
-app.use("/recommendations", recommendationsRoutes);
+app.use("/recommendations", authenticateUser, recommendationsRoutes);
+
+app.use("/users", authenticateUser, userRoutes);
 
 connectDB();
 

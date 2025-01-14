@@ -4,8 +4,20 @@ import Card from "@/app/dashboard/components/Card";
 import DashboardHeader from "@/app/dashboard/components/DashboardHeader";
 import DashboardTable from "@/app/dashboard/components/DashboardTable";
 import AuthorizedLayout from "@/components/layout/AuthorizedLayout";
+import axiosInstance from "@/utils/axiosInstance";
+import { useQuery } from "@tanstack/react-query";
 
 const DashboardPage = () => {
+  const { data: currentUser } = useQuery({
+    // et current user data
+    queryKey: ["user"],
+    queryFn: async () => {
+      return axiosInstance.get("/users/me");
+    },
+  });
+
+  const { firstName, lastName, email, profilePicture } = currentUser || {};
+
   const badges = [
     {
       name: "Top Achiever",

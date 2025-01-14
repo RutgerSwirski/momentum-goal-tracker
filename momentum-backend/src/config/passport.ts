@@ -22,7 +22,8 @@ passport.use(
           (await User.findOne({ googleId: id })) ||
           (await User.create({
             googleId: id,
-            name: displayName,
+            firstName: displayName.split(" ")[0],
+            lastName: displayName.split(" ")[1],
             email: emails[0].value,
             profilePicture: photos[0]?.value, // Save profile picture URL
           }));

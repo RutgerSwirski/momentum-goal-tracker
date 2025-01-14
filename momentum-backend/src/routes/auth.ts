@@ -2,7 +2,12 @@ import express from "express";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 
-import { signup, login, validateToken } from "../controllers/authController";
+import {
+  signup,
+  login,
+  validateToken,
+  logout,
+} from "../controllers/authController";
 
 const router = express.Router();
 
@@ -47,5 +52,7 @@ router.get(
     res.redirect(`http://localhost:3000/dashboard`);
   }
 );
+
+router.post("/logout", logout);
 
 export default router;

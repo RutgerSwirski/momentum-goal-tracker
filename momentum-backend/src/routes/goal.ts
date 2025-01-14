@@ -1,5 +1,4 @@
 import { Router } from "express";
-import authenticate from "../middleware/auth";
 import {
   createGoal,
   createGoalWithTasksAndSteps,
@@ -9,21 +8,22 @@ import {
   getTasksByGoal,
   updateGoal,
 } from "../controllers/goalController";
+import authenticateUser from "../middleware/authenticateUser";
 
 const router = Router();
 
-router.get("/", authenticate, getGoals);
+router.get("/", authenticateUser, getGoals);
 
-router.post("/", authenticate, createGoal);
+router.post("/", authenticateUser, createGoal);
 
-router.get("/:id", authenticate, getGoal);
+router.get("/:id", authenticateUser, getGoal);
 
-router.put("/:id", authenticate, updateGoal);
+router.put("/:id", authenticateUser, updateGoal);
 
-router.delete("/:id", authenticate, deleteGoal);
+router.delete("/:id", authenticateUser, deleteGoal);
 
-router.get("/:goalId/tasks", authenticate, getTasksByGoal);
+router.get("/:goalId/tasks", authenticateUser, getTasksByGoal);
 
-router.post("/consolidated", authenticate, createGoalWithTasksAndSteps);
+router.post("/consolidated", authenticateUser, createGoalWithTasksAndSteps);
 
 export default router;

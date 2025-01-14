@@ -1,14 +1,25 @@
+import axiosInstance from "@/utils/axiosInstance";
+import { useQuery } from "@tanstack/react-query";
+
 const DashboardHeader = () => {
   const level = 80;
   const xp = 50;
   const xpToNextLevel = 100;
   const xpProgress = Math.round((xp / xpToNextLevel) * 100);
 
+  const { data: currentUser } = useQuery({
+    // et current user data
+    queryKey: ["user"],
+    queryFn: async () => {
+      return axiosInstance.get("/users/me");
+    },
+  });
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-col items-start gap-2">
         <h1 className="text-4xl font-semibold text-neutral_charcoal">
-          Welcome Back, Rutger!
+          Welcome Back, {currentUser?.data?.firstName}!
         </h1>
         <h2 className="text-lg font-normal text-neutral_dark_grey">
           Let’s see what’s on your plate today and how we can achieve your
