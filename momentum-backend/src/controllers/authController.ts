@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
+import { generateRefreshToken } from "../utils/generateTokens";
 
 export const signup = async (req: any, res: any) => {
   const { firstName, lastName, email, password } = req.body;
@@ -27,7 +28,14 @@ export const signup = async (req: any, res: any) => {
     await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
-      expiresIn: "1h",
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
+    });
+
+    res.cookie("refreshToken", generateRefreshToken(user), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000,
+      sameSite: "strict",
     });
 
     res.cookie("authToken", token, {
@@ -60,7 +68,14 @@ export const login = async (req: any, res: any) => {
       return res.status(400).json({ message: "Invalid credentials" });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
-      expiresIn: "1h",
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
+    });
+
+    res.cookie("refreshToken", generateRefreshToken(user), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000,
+      sameSite: "strict",
     });
 
     res.cookie("authToken", token, {
@@ -103,4 +118,45 @@ export const logout = (req: any, res: any) => {
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
   }
+};
+
+export const refreshToken = async (req: any, res: any) => {
+  const { refreshToken } = req.cookies;
+
+  if (!refreshToken) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET!,
+    async (err: any, user: any) => {
+      if (err) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+
+      const existingUser = await User.findById(user.id);
+
+      if (!existingUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      const token = jwt.sign(
+        { id: existingUser._id },
+        process.env.JWT_SECRET!,
+        {
+          expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
+        }
+      );
+
+      res.cookie("authToken", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 3600000,
+        sameSite: "strict",
+      });
+
+      res.status(200).json({ message: "Token refreshed" });
+    }
+  );
 };

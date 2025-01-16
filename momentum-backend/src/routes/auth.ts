@@ -7,7 +7,9 @@ import {
   login,
   validateToken,
   logout,
+  refreshToken,
 } from "../controllers/authController";
+import { generateRefreshToken } from "../utils/generateTokens";
 
 const router = express.Router();
 
@@ -38,7 +40,14 @@ router.get(
 
     // Generate a JWT token for the user
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET!, {
-      expiresIn: "1h",
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRATION,
+    });
+
+    res.cookie("refreshToken", generateRefreshToken(req.user), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000,
+      sameSite: "strict",
     });
 
     res.cookie("authToken", token, {
@@ -54,5 +63,7 @@ router.get(
 );
 
 router.post("/logout", logout);
+
+router.post("/refresh", refreshToken);
 
 export default router;
