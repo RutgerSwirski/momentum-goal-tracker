@@ -1,26 +1,22 @@
-import Card from "@/components/card/Card";
-import NextStepLink from "./NextStepLink";
-import ActionButton from "@/components/buttons/ActionButton";
-
 const NextStep = ({ nextStep }) => (
-  <Card title="Next Actionable Step">
-    <div>
-      <NextStepLink
-        label="Step"
-        href={`/steps/${nextStep.step.stepId}`}
-        name={nextStep.step.name}
-      />
-      <NextStepLink
-        label="Task"
-        href={`/tasks/${nextStep.task.taskId}`}
-        name={nextStep.task.name}
-      />
+  <div className="border p-4 rounded-md bg-white shadow-sm flex justify-between items-center">
+    <div className="flex flex-col space-y-1">
+      <h4 className="text-sm font-medium text-gray-600">Next Step</h4>
+      <div className="space-y-1">
+        <p className="text-base font-semibold text-gray-800">
+          {nextStep.step.name}
+        </p>
+        {nextStep.step.description && (
+          <p className="text-sm text-gray-600">{nextStep.step.description}</p>
+        )}
+        <p className="text-xs text-gray-500">{nextStep.task.name}</p>
+      </div>
     </div>
-    <ActionButton
-      text="Complete Step"
-      onClick={() => console.log("Complete step clicked!")}
-    />
-  </Card>
+
+    <button className="bg-blue-500 text-white text-sm px-3 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+      I did it!
+    </button>
+  </div>
 );
 
 export default NextStep;

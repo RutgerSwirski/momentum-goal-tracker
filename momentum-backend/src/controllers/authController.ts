@@ -35,14 +35,14 @@ export const signup = async (req: any, res: any) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 3600000,
-      sameSite: "strict",
+      sameSite: "lax", // Use "lax" for cross-origin but secure requests
     });
 
     res.cookie("authToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 3600000,
-      sameSite: "strict",
+      sameSite: "lax",
     });
 
     res.status(201).json({ message: "User created" });
@@ -75,14 +75,14 @@ export const login = async (req: any, res: any) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 3600000,
-      sameSite: "strict",
+      sameSite: "lax", // Use "lax" for cross-origin but secure requests
     });
 
     res.cookie("authToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 3600000,
-      sameSite: "strict",
+      sameSite: "lax",
     });
 
     res.status(200).json({ message: "Login successful" });
@@ -112,7 +112,7 @@ export const logout = (req: any, res: any) => {
     res.clearCookie("authToken", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "lax",
     });
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
@@ -122,6 +122,8 @@ export const logout = (req: any, res: any) => {
 
 export const refreshToken = async (req: any, res: any) => {
   const { refreshToken } = req.cookies;
+
+  console.log(req.cookies, "cookies");
 
   if (!refreshToken) {
     return res.status(401).json({ message: "Unauthorized" });
@@ -153,7 +155,7 @@ export const refreshToken = async (req: any, res: any) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 3600000,
-        sameSite: "strict",
+        sameSite: "lax",
       });
 
       res.status(200).json({ message: "Token refreshed" });

@@ -2,6 +2,16 @@ import { NextResponse } from "next/server";
 
 export async function middleware(req: Request) {
   const token = req.cookies.get("authToken")?.value;
+  const refreshToken = req.cookies.get("refreshToken")?.value;
+
+  console.log(
+    "Middleware token:",
+    token,
+    "refreshToken:",
+    refreshToken,
+    "cookies:",
+    req
+  );
 
   if (!token) {
     console.log("No token found, redirecting to login.");
@@ -20,10 +30,40 @@ export async function middleware(req: Request) {
       },
     });
 
-    if (!res.ok) {
-      console.error("Invalid token or failed validation.");
+    if (res.ok) {
+      return NextResponse.next();
+    }
+
+    if (!refreshToken) {
+      console.log("No refresh token found, redirecting to login.");
       return NextResponse.redirect(new URL("/login", req.url));
     }
+
+    const refreshRes = await fetch(`${apiUrl}/auth/refresh`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ refreshToken }),
+    });
+
+    if (!refreshRes.ok) {
+      console.error("Failed to refresh token.");
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+
+    const data = await refreshRes.json();
+    const newToken = data.token;
+
+    const response = NextResponse.next();
+    response.cookies.set("authToken", newToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000,
+    });
+
+    return response;
   } catch (err) {
     console.error("Middleware fetch failed:", err);
     return NextResponse.redirect(new URL("/login", req.url));

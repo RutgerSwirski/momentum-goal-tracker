@@ -1,13 +1,13 @@
 "use client";
 
 import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
-import TaskList from "@/components/lists/TaskList";
+import TaskList from "@/components/lists/taskList/TaskList";
 import axiosInstance from "@/utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import GoalMetadata from "./components/GoalMetadata";
-import GoalProgress from "./components/GoalProgress";
 import NextStep from "./components/NextStep";
+import ProgressBar from "@/components/progressBar/ProgressBar";
 
 const GoalPage = () => {
   const { goalId } = useParams();
@@ -68,7 +68,7 @@ const GoalPage = () => {
     );
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto flex flex-col space-y-8">
       {/* Breadcrumbs */}
       <Breadcrumbs
         customLabels={{
@@ -77,30 +77,36 @@ const GoalPage = () => {
         }}
       />
 
-      {/* Goal Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">{goal?.name}</h1>
-        <p className="text-gray-500">{goal?.description}</p>
+      <div className="flex justify-between items-center">
+        {/* Goal Header */}
+        <div className=" flex flex-col space-y-2">
+          <h1 className="text-3xl font-bold">{goal?.name}</h1>
+          <p className="text-gray-500">{goal?.description}</p>
+        </div>
+
+        <div className="max-w-sm w-full">
+          {/* Progress */}
+          {!goalProgressIsLoading && !progressIsError && (
+            <ProgressBar
+              completed={
+                goalProgress.completedTasks + goalProgress.completedSteps
+              }
+              total={goalProgress.totalTasks + goalProgress.totalSteps}
+            />
+          )}
+        </div>
       </div>
 
-      {/* Main Grid Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Metadata */}
-        <GoalMetadata goal={goal} goalIsLoading={goalIsLoading} />
+      {/* Metadata */}
+      <GoalMetadata goal={goal} goalIsLoading={goalIsLoading} />
 
-        {/* Progress */}
-        {!goalProgressIsLoading && !progressIsError && (
-          <GoalProgress goalProgress={goalProgress} />
-        )}
-
-        {/* Next Step */}
-        {!goalNextStepIsLoading && !nextStepIsError && (
-          <NextStep nextStep={goalNextStep} />
-        )}
-      </div>
+      {/* Next Step */}
+      {!goalNextStepIsLoading && !nextStepIsError && (
+        <NextStep nextStep={goalNextStep} />
+      )}
 
       {/* Task Section */}
-      <div className="mt-8">
+      <div className="">
         <h2 className="text-2xl font-bold mb-4">Tasks</h2>
         {tasksIsLoading ? (
           <div className="p-4 text-center">Loading tasks...</div>
@@ -109,16 +115,7 @@ const GoalPage = () => {
             Failed to load tasks.
           </div>
         ) : (
-          <TaskList
-            tasks={tasks}
-            onTaskEdit={(task) => console.log("Edit task", task)}
-            onTaskDelete={(taskId) => console.log("Delete task", taskId)}
-            fetchSteps={(taskId) =>
-              axiosInstance
-                .get(`/tasks/${taskId}/steps`)
-                .then((res) => res.data.steps)
-            }
-          />
+          <TaskList tasks={tasks} />
         )}
       </div>
     </div>

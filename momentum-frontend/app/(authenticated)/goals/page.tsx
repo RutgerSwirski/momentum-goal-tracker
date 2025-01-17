@@ -4,8 +4,10 @@ import NewGoalModal from "@/features/goalWizard/GoalWizardModal";
 import { fetchGoals } from "@/services/goals/goalService";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const GoalsPage = () => {
+  const router = useRouter();
   const { data } = useQuery({
     queryKey: ["goals"],
     queryFn: fetchGoals,
@@ -91,28 +93,62 @@ const GoalsPage = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {data?.map((goal: any) => (
-          <ul
-            key={goal._id}
-            className="p-4 bg-white rounded-lg shadow-sm border border-gray-200"
-          >
-            <h2 className="text-lg font-bold text-gray-900">{goal.name}</h2>
-            <p className="text-sm text-gray-600 mt-1">{goal.description}</p>
-            <p className="text-sm text-gray-600 mt-1">
-              Due Date: {goal.dueDate}
-            </p>
-            <p className="text-sm text-gray-600 mt-1">
-              Priority: {goal.priority}
-            </p>
-            <p className="text-sm text-gray-600 mt-1">
-              Category: {goal.category}
-            </p>
-
-            <Link href={`/goals/${goal._id}`}>View Goal</Link>
-          </ul>
-        ))}
-      </div>
+      <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+        <thead>
+          <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+            <th className="py-3 px-6 text-left">Goal Name</th>
+            <th className="py-3 px-6 text-left">Description</th>
+            <th className="py-3 px-6 text-left">Due Date</th>
+            <th className="py-3 px-6 text-left">Priority</th>
+            <th className="py-3 px-6 text-left">Category</th>
+            <th className="py-3 px-6 text-left">Progress</th>
+          </tr>
+        </thead>
+        <tbody className="text-gray-600 text-sm">
+          {data?.map((goal: any) => (
+            <tr
+              onClick={() => router.push(`/goals/${goal._id}`)}
+              key={goal._id}
+              className="border-b border-gray-200 hover:bg-gray-100 cursor-pointer"
+            >
+              <td className="py-3 px-6 text-left font-bold text-gray-900">
+                {goal.name}
+              </td>
+              <td className="py-3 px-6 text-left">{goal.description}</td>
+              <td className="py-3 px-6 text-left">
+                {new Date(goal.dueDate).toDateString()}
+              </td>
+              <td className="py-3 px-6 text-left">
+                <span
+                  className={`py-1 px-3 rounded-full text-xs font-semibold ${
+                    goal.priority === "high"
+                      ? "bg-red-100 text-red-600"
+                      : goal.priority === "medium"
+                      ? "bg-yellow-100 text-yellow-600"
+                      : "bg-green-100 text-green-600"
+                  }`}
+                >
+                  {goal.priority}
+                </span>
+              </td>
+              <td className="py-3 px-6 text-left">{goal.category}</td>
+              <td className="py-3 px-6 text-left">
+                <div className="relative w-full bg-gray-200 h-4 rounded-full">
+                  <div
+                    className="bg-blue-500 h-4 rounded-full"
+                    style={{
+                      width: `${goal.progress || 0}%`, // Replace with the actual progress value
+                    }}
+                  />
+                </div>
+                <span className="text-xs text-gray-600 mt-1">
+                  {goal.progress || 0}%
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   );
 };

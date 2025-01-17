@@ -25,10 +25,9 @@ const AuthorizedSidebar = () => {
 
   return (
     <aside
-      className={` sticky top-4  px-8 py-8 bg-primary_teal flex flex-col gap-8 ml-4 mt-4 mb-4 rounded-md 
-       h-[calc(100vh-2rem)]
-        transition-all duration-300
-        ${isExpanded ? "w-64" : "w-16"}`}
+      className={` sticky top-0  px-8 py-8 bg-primary_teal flex flex-col gap-8 h-screen transition-all duration-300 ${
+        isExpanded ? "w-64" : "w-16"
+      }`}
     >
       <Link href="/">
         <Image
