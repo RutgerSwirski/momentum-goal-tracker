@@ -15,7 +15,6 @@ const goalSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      maxlength: 500,
     },
     dueDate: {
       type: Date,

@@ -1,6 +1,10 @@
 const GoalMetadata = ({ goal, goalIsLoading }) => {
+  if (goalIsLoading) {
+    return <div className="text-gray-500 text-sm">Loading...</div>;
+  }
+
   if (!goal) {
-    return <div>Loading...</div>;
+    return <div className="text-gray-500 text-sm">No goal data available.</div>;
   }
 
   const daysLeft = Math.max(
@@ -34,10 +38,9 @@ const GoalMetadata = ({ goal, goalIsLoading }) => {
     },
     daysLeft: {
       icon: "⏳",
-      value: daysLeft,
+      value: `${daysLeft} ${daysLeft === 1 ? "day" : "days"}`,
       label: "Days Left",
     },
-
     createdAt: {
       icon: "🕒",
       value: new Date(goal.createdAt).toDateString(),
@@ -45,21 +48,20 @@ const GoalMetadata = ({ goal, goalIsLoading }) => {
     },
   };
 
-  if (goalIsLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <div className="flex space-x-12">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
       {Object.keys(metadata).map((key) => (
-        <div key={key} className="flex  space-y-2 flex-col">
-          <div className="flex items-center space-x-2 text-gray-400">
-            {/* <span>{metadata[key].icon}</span> */}
-            <span className="text-sm text-gray-600 font-medium uppercase">
+        <div
+          key={key}
+          className="flex flex-col items-start p-4 bg-gray-50 border rounded-lg shadow-sm"
+        >
+          <div className="flex items-center space-x-2 mb-1">
+            <span className="text-lg">{metadata[key].icon}</span>
+            <span className="text-sm font-medium text-gray-600">
               {metadata[key].label}
             </span>
           </div>
-          <span className="text-base text-gray-900 capitalize">
+          <span className="text-base font-semibold text-gray-900 capitalize">
             {metadata[key].value}
           </span>
         </div>

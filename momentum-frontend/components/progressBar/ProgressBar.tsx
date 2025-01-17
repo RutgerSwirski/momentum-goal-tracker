@@ -1,14 +1,41 @@
-const ProgressBar = ({ completed, total }) => {
+import clsx from "clsx";
+
+const ProgressBar = ({
+  completed,
+  total,
+  size = "sm",
+}: {
+  completed: number;
+  total: number;
+  size?: "sm" | "md" | "lg";
+}) => {
+  if (total === 0) {
+    return null;
+  }
   const percentage = total > 0 ? (completed / total) * 100 : 0;
+
+  const sizes = {
+    sm: "h-2",
+    md: "h-4",
+    lg: "h-6",
+  };
+  const textSizes = {
+    sm: "text-xs",
+    md: "text-sm",
+    lg: "text-base",
+  };
 
   return (
     <div className="flex space-x-2 items-center w-full">
-      <span className="text-xs font-medium text-gray-600">
+      <span className={clsx("font-medium text-gray-600", textSizes[size])}>
         {percentage.toFixed(1)}%
       </span>
-      <div className="w-full bg-gray-100 rounded-full h-2">
+      <div className={clsx("w-full bg-gray-200 rounded-full", sizes[size])}>
         <div
-          className="bg-blue-500 rounded-full h-2 transition-all"
+          className={clsx(
+            "bg-blue-500 rounded-full transition-all",
+            sizes[size]
+          )}
           style={{ width: `${percentage}%` }}
         ></div>
       </div>

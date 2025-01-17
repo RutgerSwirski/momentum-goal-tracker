@@ -1,12 +1,12 @@
 type PrimaryButtonProps = {
-  text: string;
+  children: React.ReactNode;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
 };
 
 const PrimaryButton = ({
-  text,
+  children,
   onClick,
   type,
   disabled,
@@ -18,7 +18,7 @@ const PrimaryButton = ({
       onClick={onClick}
       className=" px-6 py-3 bg-primary_teal rounded-lg text-button text-white"
     >
-      {text}
+      {children}
     </button>
   );
 };

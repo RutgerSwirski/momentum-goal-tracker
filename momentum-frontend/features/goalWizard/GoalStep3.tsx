@@ -1,15 +1,7 @@
-import {
-  Description,
-  DialogTitle,
-  Field,
-  Fieldset,
-  Input,
-  Label,
-} from "@headlessui/react";
+import AddStepForm from "./components/GoalStep3/AddStepForm";
 import HeaderSection from "./components/GoalStep3/HeaderSection";
 import RecommendedStepsList from "./components/GoalStep3/RecommendedStepsList";
 import StepsForTask from "./components/GoalStep3/StepsForTask";
-import AddStepForm from "./components/GoalStep3/AddStepForm";
 import TaskSelector from "./components/GoalStep3/TaskSelector";
 
 const GoalStep3 = () => {

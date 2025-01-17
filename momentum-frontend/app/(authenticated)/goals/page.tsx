@@ -1,5 +1,6 @@
 "use client";
 
+import ProgressBar from "@/components/progressBar/ProgressBar";
 import NewGoalModal from "@/features/goalWizard/GoalWizardModal";
 import { fetchGoals } from "@/services/goals/goalService";
 import { useQuery } from "@tanstack/react-query";
@@ -93,62 +94,53 @@ const GoalsPage = () => {
         </div>
       </div>
 
-      <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
-        <thead>
-          <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
-            <th className="py-3 px-6 text-left">Goal Name</th>
-            <th className="py-3 px-6 text-left">Description</th>
-            <th className="py-3 px-6 text-left">Due Date</th>
-            <th className="py-3 px-6 text-left">Priority</th>
-            <th className="py-3 px-6 text-left">Category</th>
-            <th className="py-3 px-6 text-left">Progress</th>
-          </tr>
-        </thead>
-        <tbody className="text-gray-600 text-sm">
-          {data?.map((goal: any) => (
-            <tr
-              onClick={() => router.push(`/goals/${goal._id}`)}
-              key={goal._id}
-              className="border-b border-gray-200 hover:bg-gray-100 cursor-pointer"
-            >
-              <td className="py-3 px-6 text-left font-bold text-gray-900">
-                {goal.name}
-              </td>
-              <td className="py-3 px-6 text-left">{goal.description}</td>
-              <td className="py-3 px-6 text-left">
-                {new Date(goal.dueDate).toDateString()}
-              </td>
-              <td className="py-3 px-6 text-left">
-                <span
-                  className={`py-1 px-3 rounded-full text-xs font-semibold ${
-                    goal.priority === "high"
-                      ? "bg-red-100 text-red-600"
+      <ul className="flex flex-col space-y-4">
+        {data?.map((goal: any) => (
+          <li
+            onClick={() => router.push(`/goals/${goal._id}`)}
+            key={goal._id}
+            className="border bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer"
+          >
+            <div className="flex justify-between items-center p-4 hover:bg-gray-50">
+              <div className="flex flex-col space-y-2 w-full">
+                <h4 className="text-sm font-semibold text-gray-800">
+                  {goal.name}
+                </h4>
+                <p className="text-xs text-gray-600">{goal.description}</p>
+
+                <div className="flex items-center space-x-4">
+                  <div className="flex-1 max-w-sm">
+                    <ProgressBar
+                      completed={(Math.random() * 100).toFixed(0)}
+                      total={100}
+                    />
+                  </div>
+
+                  <span className="text-xs text-gray-500">{goal.status}</span>
+                  <span className="text-xs text-gray-500">
+                    {new Date(goal.dueDate).toDateString()}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    {goal.priority === "high"
+                      ? "🔥 High"
                       : goal.priority === "medium"
-                      ? "bg-yellow-100 text-yellow-600"
-                      : "bg-green-100 text-green-600"
-                  }`}
-                >
-                  {goal.priority}
-                </span>
-              </td>
-              <td className="py-3 px-6 text-left">{goal.category}</td>
-              <td className="py-3 px-6 text-left">
-                <div className="relative w-full bg-gray-200 h-4 rounded-full">
-                  <div
-                    className="bg-blue-500 h-4 rounded-full"
-                    style={{
-                      width: `${goal.progress || 0}%`, // Replace with the actual progress value
-                    }}
-                  />
+                      ? "⚠️ Medium"
+                      : goal.priority === "low"
+                      ? "✅ Low"
+                      : "None"}
+                  </span>
+                  <span className="text-xs text-gray-500">{goal.category}</span>
                 </div>
-                <span className="text-xs text-gray-600 mt-1">
-                  {goal.progress || 0}%
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </div>
+
+              <div className="flex space-x-4 text-sm text-blue-600">
+                <button className="hover:underline">Edit</button>
+                <button className="hover:underline text-red-500">Delete</button>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
     </>
   );
 };
