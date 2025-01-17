@@ -1,8 +1,10 @@
 const NextStep = ({ nextStep }) => (
   <div className="border p-4 rounded-md bg-white shadow-sm flex justify-between items-center">
-    <div className="flex flex-col space-y-1">
-      <h4 className="text-sm font-medium text-gray-600">Next Step</h4>
-      <div className="space-y-1">
+    <div className="flex flex-col space-y-2">
+      <h4 className="text-sm font-semibold text-gray-600 uppercase">
+        Next Step
+      </h4>
+      <div className="space-y-1 ">
         <p className="text-base font-semibold text-gray-800">
           {nextStep.step.name}
         </p>

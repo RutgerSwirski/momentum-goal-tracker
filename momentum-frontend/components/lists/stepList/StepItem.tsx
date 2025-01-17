@@ -1,3 +1,5 @@
+"use client";
+
 import axiosInstance from "@/utils/axiosInstance";
 import { useMutation } from "@tanstack/react-query";
 
@@ -17,38 +19,49 @@ const StepItem = ({ step }) => {
   });
 
   if (!step) {
-    return <div>Loading step...</div>;
+    return <div className="p-4 text-sm text-gray-500">Loading step...</div>;
   }
 
   return (
-    <li key={step._id} className="p-4 border rounded-lg ">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-4">
-          <input
-            onChange={() => markStepComplete()}
-            type="checkbox"
-            checked={step.status === "completed"}
-          />
+    <li
+      key={step._id}
+      className="p-4 border rounded-lg bg-white shadow-sm flex justify-between items-center"
+    >
+      {/* Step Details */}
+      <div className="flex items-center space-x-4">
+        <input
+          onChange={() => markStepComplete()}
+          type="checkbox"
+          checked={step.status === "completed"}
+          className="w-5 h-5 text-green-500 border-gray-300 rounded focus:ring-green-400"
+        />
 
-          <div>
-            <h5 className="font-semibold">{step.name}</h5>
-            <p className="text-sm text-gray-600">{step.status}</p>
-          </div>
-        </div>
         <div>
-          <button
-            onClick={() => markStepComplete()}
-            className="text-green-500 underline"
+          <h5 className="text-sm font-medium text-gray-800">{step.name}</h5>
+          <p
+            className={`text-xs ${
+              step.status === "completed" ? "text-green-500" : "text-gray-500"
+            }`}
           >
-            Mark Complete
-          </button>
-          <button
-            onClick={() => deleteStep()}
-            className="ml-2 text-red-500 underline"
-          >
-            Delete
-          </button>
+            {step.status === "completed" ? "Completed" : "Pending"}
+          </p>
         </div>
+      </div>
+
+      {/* Actions */}
+      <div className="flex space-x-3 text-sm">
+        <button
+          onClick={() => markStepComplete()}
+          className="text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Mark Complete
+        </button>
+        <button
+          onClick={() => deleteStep()}
+          className="text-red-500 hover:underline focus:outline-none focus:ring-2 focus:ring-red-500"
+        >
+          Delete
+        </button>
       </div>
     </li>
   );

@@ -69,33 +69,35 @@ const GoalPage = () => {
 
   return (
     <div className="container mx-auto flex flex-col space-y-8">
-      {/* Breadcrumbs */}
-      <Breadcrumbs
-        customLabels={{
-          "/goals": "Goals",
-          [goalId]: goal?.name,
-        }}
-      />
+      <div className="space-y-4">
+        <Breadcrumbs
+          customLabels={{
+            "/goals": "Goals",
+            [goalId]: goal?.name,
+          }}
+        />
 
-      <div className="flex justify-between items-center">
-        {/* Goal Header */}
-        <div className=" flex flex-col space-y-2">
-          <h1 className="text-3xl font-bold">{goal?.name}</h1>
-          <p className="text-gray-500">{goal?.description}</p>
-        </div>
+        <div className="flex justify-between items-center">
+          {/* Goal Header */}
+          <div className=" flex flex-col space-y-2">
+            <h1 className="text-3xl font-bold">{goal?.name}</h1>
+            <p className="text-gray-500">{goal?.description}</p>
+          </div>
 
-        <div className="max-w-sm w-full">
-          {/* Progress */}
-          {!goalProgressIsLoading && !progressIsError && (
-            <ProgressBar
-              completed={
-                goalProgress.completedTasks + goalProgress.completedSteps
-              }
-              total={goalProgress.totalTasks + goalProgress.totalSteps}
-            />
-          )}
+          <div className="max-w-sm w-full">
+            {/* Progress */}
+            {!goalProgressIsLoading && !progressIsError && (
+              <ProgressBar
+                completed={
+                  goalProgress.completedTasks + goalProgress.completedSteps
+                }
+                total={goalProgress.totalTasks + goalProgress.totalSteps}
+              />
+            )}
+          </div>
         </div>
       </div>
+      {/* Breadcrumbs */}
 
       {/* Metadata */}
       <GoalMetadata goal={goal} goalIsLoading={goalIsLoading} />
@@ -106,8 +108,8 @@ const GoalPage = () => {
       )}
 
       {/* Task Section */}
-      <div className="">
-        <h2 className="text-2xl font-bold mb-4">Tasks</h2>
+      <div className="space-y-2">
+        <h2 className="text-lg font-medium text-gray-600 uppercase">Tasks</h2>
         {tasksIsLoading ? (
           <div className="p-4 text-center">Loading tasks...</div>
         ) : tasksIsError ? (

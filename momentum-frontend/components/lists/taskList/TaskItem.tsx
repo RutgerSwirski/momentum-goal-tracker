@@ -1,4 +1,4 @@
-"use client ";
+"use client";
 
 import ProgressBar from "@/components/progressBar/ProgressBar";
 import { useState } from "react";
@@ -7,66 +7,67 @@ import axiosInstance from "@/utils/axiosInstance";
 
 const TaskItem = ({ task }: { task: any }) => {
   const [expanded, setExpanded] = useState(false);
+
   return (
     <li
       key={task._id}
-      className=" border bg-white last:border-b-0 rounded-lg flex flex-col"
+      className="border bg-white rounded-lg shadow-sm overflow-hidden"
     >
+      {/* Task Header */}
       <div
         onClick={() => setExpanded(!expanded)}
-        className="flex justify-between items-center border-b"
+        className="flex justify-between items-center cursor-pointer p-4 hover:bg-gray-50"
       >
-        <div className="flex justify-between items-center cursor-pointer w-full hover:bg-gray-100 p-4 bg-white rounded-lg">
-          <div className="flex space-y-8 flex-col w-full">
-            <div>
-              <h4 className="font-medium">{task.name}</h4>
-              <p className="text-sm text-gray-600">{task.description}</p>
+        <div className="flex flex-col space-y-2 w-full">
+          <h4 className="text-sm font-semibold text-gray-800">{task.name}</h4>
+          <p className="text-xs text-gray-600">{task.description}</p>
+
+          <div className="flex items-center space-x-4">
+            {/* Progress Bar */}
+            <div className="flex-1 max-w-sm">
+              <ProgressBar
+                completed={(Math.random() * 100).toFixed(0)}
+                total={100}
+              />
             </div>
 
-            <div className="flex space-x-4 items-center w-full">
-              <div className="max-w-xs w-full">
-                <ProgressBar
-                  completed={(Math.random() * 100).toFixed(0)}
-                  total={100}
-                />
-              </div>
-
-              <span className="text-sm text-gray-600">{task.status}</span>
-
-              <span className="text-sm text-gray-600">
-                {new Date(task.dueDate).toDateString()}
-              </span>
-
-              <span className="text-sm text-gray-600">
-                {task.priority === "high"
-                  ? "🔥"
-                  : task.priority === "medium"
-                  ? "⚠️"
-                  : task.priority === "low"
-                  ? "low priority"
-                  : "✅"}
-              </span>
-
-              <span className="text-sm text-gray-600">{task.category}</span>
-            </div>
+            {/* Task Info */}
+            <span className="text-xs text-gray-500">{task.status}</span>
+            <span className="text-xs text-gray-500">
+              {new Date(task.dueDate).toDateString()}
+            </span>
+            <span className="text-xs text-gray-500">
+              {task.priority === "high"
+                ? "🔥 High"
+                : task.priority === "medium"
+                ? "⚠️ Medium"
+                : task.priority === "low"
+                ? "✅ Low"
+                : "None"}
+            </span>
+            <span className="text-xs text-gray-500">{task.category}</span>
           </div>
+        </div>
 
-          <div className="flex space-x-2">
-            <span>Edit</span>
-            <span>Delete</span>
-          </div>
+        {/* Actions */}
+        <div className="flex space-x-4 text-sm text-blue-600">
+          <button className="hover:underline">Edit</button>
+          <button className="hover:underline text-red-500">Delete</button>
         </div>
       </div>
 
+      {/* Step List */}
       {expanded && (
-        <StepList
-          taskId={task._id}
-          fetchSteps={(taskId: string) =>
-            axiosInstance
-              .get(`/tasks/${taskId}/steps`)
-              .then((res) => res.data.steps)
-          }
-        />
+        <div className="bg-gray-50">
+          <StepList
+            taskId={task._id}
+            fetchSteps={(taskId: string) =>
+              axiosInstance
+                .get(`/tasks/${taskId}/steps`)
+                .then((res) => res.data.steps)
+            }
+          />
+        </div>
       )}
     </li>
   );

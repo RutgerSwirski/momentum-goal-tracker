@@ -18,14 +18,16 @@ const StepList = ({ taskId, fetchSteps }) => {
   }
 
   return (
-    <ul className="flex flex-col space-y-4 p-4 px-8 rounded-lg">
+    <div className="flex flex-col space-y-4 p-4 px-8 rounded-lg">
       <h3 className="text-sm font-semibold">
         Steps for Task: {steps[0].taskName} ({steps.length})
       </h3>
-      {steps.map((step) => (
-        <StepItem step={step} key={step._id} />
-      ))}
-    </ul>
+      <ul className="flex flex-col space-y-2">
+        {steps.map((step) => (
+          <StepItem step={step} key={step._id} />
+        ))}
+      </ul>
+    </div>
   );
 };
 
