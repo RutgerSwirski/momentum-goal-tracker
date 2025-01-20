@@ -1,8 +1,8 @@
 "use client";
 
-import Card from "@/app/(authenticated)/dashboard/components/Card";
 import DashboardHeader from "@/app/(authenticated)/dashboard/components/DashboardHeader";
 import DashboardTable from "@/app/(authenticated)/dashboard/components/DashboardTable";
+import Card from "@/components/common/Card";
 import axiosInstance from "@/utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 

@@ -24,7 +24,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
       {/* Page Content */}
-      <main className="flex-1 p-8 lg:p-8 bg-neutral_light_grey pb-32">
+      <main className="flex-1 p-8 lg:p-8 space-y-8 bg-neutral_light_grey pb-32">
         {children}
       </main>
 
