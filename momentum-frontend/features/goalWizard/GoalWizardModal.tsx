@@ -77,7 +77,7 @@ const GoalWizardModal = () => {
 
   return (
     <>
-      <PrimaryButton text="Create a new goal" onClick={() => setIsOpen(true)} />
+      <PrimaryButton onClick={() => setIsOpen(true)}>+ New Goal</PrimaryButton>
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <DialogPanel>

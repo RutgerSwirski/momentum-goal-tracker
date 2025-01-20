@@ -73,7 +73,7 @@ const GoalPage = () => {
     );
 
   return (
-    <div className="container mx-auto space-y-8">
+    <div className="container mx-auto space-y-4">
       {/* Breadcrumbs */}
       <Breadcrumbs
         customLabels={{
@@ -86,50 +86,82 @@ const GoalPage = () => {
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-semibold text-gray-900">{goal?.name}</h1>
-          <div className="max-w-72 w-full">
-            {!goalProgressIsLoading && !progressIsError && (
-              <ProgressBar
-                size="md"
-                completed={
-                  goalProgress?.completedTasks + goalProgress?.completedSteps ||
-                  0
-                }
-                total={goalProgress?.totalTasks + goalProgress?.totalSteps || 1}
-              />
-            )}
-          </div>
+
+          <EditGoalModal goal={goal} />
+
+          <NewTaskModal />
         </div>
         {goal?.description && (
-          <div>
-            <h3 className="text-lg font-medium text-gray-600">Description</h3>
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold text-gray-900">Description</h3>
             <p className="text-sm text-gray-500">{goal?.description}</p>
           </div>
         )}
       </div>
 
-      {/* Metadata Section */}
-      <GoalMetadata goal={goal} goalIsLoading={goalIsLoading} />
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+        <div className="space-y-8 col-span-3">
+          {/* Metadata Section */}
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Goal Information
+            </h2>
 
-      {/* Next Step Section */}
-      {!goalNextStepIsLoading && !nextStepIsError && (
-        <NextStep nextStep={goalNextStep} />
-      )}
-
-      {/* Task Section */}
-      <div>
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold text-gray-900">Tasks</h2>
-          <NewTaskModal />
-        </div>
-        {tasksIsLoading ? (
-          <div className="p-4 text-center text-gray-500">Loading tasks...</div>
-        ) : tasksIsError ? (
-          <div className="p-4 text-center text-red-500">
-            Failed to load tasks.
+            <GoalMetadata goal={goal} goalIsLoading={goalIsLoading} />
           </div>
-        ) : (
-          <TaskList tasks={tasks} />
-        )}
+
+          {/* Task Section */}
+          <div>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">Tasks</h2>
+              {/* <NewTaskModal /> */}
+              {/* sort by filter */}
+              <select className="input">
+                <option>Sort by</option>
+                <option>Due Date</option>
+                <option>Priority</option>
+              </select>
+            </div>
+            {tasksIsLoading ? (
+              <div className="p-4 text-center text-gray-500">
+                Loading tasks...
+              </div>
+            ) : tasksIsError ? (
+              <div className="p-4 text-center text-red-500">
+                Failed to load tasks.
+              </div>
+            ) : (
+              <TaskList tasks={tasks} />
+            )}
+          </div>
+        </div>
+
+        <div className="space-y-8">
+          <div className="space-y-4">
+            <span className="text-lg font-semibold text-gray-900">
+              Progress
+            </span>
+
+            <div className="bg-white p-4 rounded-md shadow-sm space-y-4">
+              {!goalProgressIsLoading && !progressIsError && (
+                <ProgressBar
+                  size="md"
+                  completed={
+                    goalProgress?.completedTasks +
+                      goalProgress?.completedSteps || 0
+                  }
+                  total={
+                    goalProgress?.totalTasks + goalProgress?.totalSteps || 1
+                  }
+                />
+              )}
+            </div>
+          </div>
+          {/* Next Step Section */}
+          {!goalNextStepIsLoading && !nextStepIsError && (
+            <NextStep nextStep={goalNextStep} />
+          )}
+        </div>
       </div>
     </div>
   );

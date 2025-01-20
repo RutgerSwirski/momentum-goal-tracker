@@ -51,7 +51,7 @@ const Navbar = () => {
         <NavbarLink href="/login">Login</NavbarLink>
 
         <NavbarLink href="/signup">
-          <PrimaryButton text="Sign Up" />
+          <PrimaryButton>Sign Up</PrimaryButton>
         </NavbarLink>
       </ul>
     </nav>

@@ -10,7 +10,9 @@ const NewStepModal = () => {
 
   return (
     <div>
-      <Button onClick={openModal}>+ New Step</Button>
+      <Button className="text-blue-500" onClick={openModal}>
+        + New Step
+      </Button>
       <Modal isOpen={isOpen} onClose={closeModal}>
         <DialogPanel>
           <DialogTitle>New Step</DialogTitle>

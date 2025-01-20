@@ -4,7 +4,6 @@ import ProgressBar from "@/components/progressBar/ProgressBar";
 import NewGoalModal from "@/features/goalWizard/GoalWizardModal";
 import { fetchGoals } from "@/services/goals/goalService";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const GoalsPage = () => {
@@ -94,33 +93,23 @@ const GoalsPage = () => {
         </div>
       </div>
 
-      <ul className="flex flex-col space-y-4">
+      <div
+        // create a grid system with 4 columns
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+      >
         {data?.map((goal: any) => (
-          <li
+          <div
             onClick={() => router.push(`/goals/${goal._id}`)}
             key={goal._id}
             className="border bg-white rounded-lg shadow-sm overflow-hidden cursor-pointer"
           >
             <div className="flex justify-between items-center p-4 hover:bg-gray-50">
-              <div className="flex flex-col space-y-2 w-full">
-                <h4 className="text-sm font-semibold text-gray-800">
-                  {goal.name}
-                </h4>
-                <p className="text-xs text-gray-600">{goal.description}</p>
-
-                <div className="flex items-center space-x-4">
-                  <div className="flex-1 max-w-sm">
-                    <ProgressBar
-                      completed={(Math.random() * 100).toFixed(0)}
-                      total={100}
-                    />
-                  </div>
-
-                  <span className="text-xs text-gray-500">{goal.status}</span>
-                  <span className="text-xs text-gray-500">
+              <div className="flex flex-col space-y-4 w-full">
+                <div className="flex items-start gap-4">
+                  <span className="text-xs text-gray-500 border rounded-full px-4 py-1">
                     {new Date(goal.dueDate).toDateString()}
                   </span>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-gray-500 border rounded-full px-4 py-1">
                     {goal.priority === "high"
                       ? "🔥 High"
                       : goal.priority === "medium"
@@ -129,18 +118,33 @@ const GoalsPage = () => {
                       ? "✅ Low"
                       : "None"}
                   </span>
-                  <span className="text-xs text-gray-500">{goal.category}</span>
+                </div>
+
+                <h4 className="text-base font-semibold text-gray-800">
+                  {goal.name}
+                </h4>
+
+                <div className="flex-1 w-full">
+                  <ProgressBar
+                    completed={(Math.random() * 100).toFixed(0)}
+                    total={100}
+                  />
+                </div>
+
+                <div className="flex items-center space-x-4">
+                  <span className="text-xs text-gray-500 border rounded-full bg-gray-100 px-4 py-1">
+                    {goal.status}
+                  </span>
+
+                  <span className="text-xs text-gray-500 border rounded-full bg-gray-100 px-4 py-1">
+                    {goal.category}
+                  </span>
                 </div>
               </div>
-
-              <div className="flex space-x-4 text-sm text-blue-600">
-                <button className="hover:underline">Edit</button>
-                <button className="hover:underline text-red-500">Delete</button>
-              </div>
             </div>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </>
   );
 };

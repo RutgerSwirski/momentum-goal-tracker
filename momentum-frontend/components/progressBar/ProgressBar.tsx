@@ -21,13 +21,13 @@ const ProgressBar = ({
   };
   const textSizes = {
     sm: "text-xs",
-    md: "text-sm",
-    lg: "text-base",
+    md: "text-md",
+    lg: "text-lg",
   };
 
   return (
     <div className="flex space-x-2 items-center w-full">
-      <span className={clsx("font-medium text-gray-600", textSizes[size])}>
+      <span className={clsx("font-semibold text-gray-600", textSizes[size])}>
         {percentage.toFixed(1)}%
       </span>
       <div className={clsx("w-full bg-gray-200 rounded-full", sizes[size])}>

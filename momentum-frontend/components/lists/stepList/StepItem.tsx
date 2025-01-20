@@ -25,7 +25,7 @@ const StepItem = ({ step }) => {
   return (
     <li
       key={step._id}
-      className="p-4 border rounded-lg bg-white shadow-sm flex justify-between items-center"
+      className="p-4 border-b rounded-lg flex justify-between items-center last:border-b-0"
     >
       {/* Step Details */}
       <div className="flex items-center space-x-4">
@@ -36,10 +36,10 @@ const StepItem = ({ step }) => {
           className="w-5 h-5 text-green-500 border-gray-300 rounded focus:ring-green-400"
         />
 
-        <div>
+        <div className="flex flex-col space-y-2">
           <h5 className="text-sm font-medium text-gray-800">{step.name}</h5>
           <p
-            className={`text-xs ${
+            className={`text-sm ${
               step.status === "completed" ? "text-green-500" : "text-gray-500"
             }`}
           >
