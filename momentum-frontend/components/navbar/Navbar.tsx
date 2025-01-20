@@ -1,6 +1,6 @@
 "use client";
 
-import PrimaryButton from "@/components/buttons/PrimaryButton";
+import PrimaryButton from "@/components/common/buttons/PrimaryButton";
 import NavbarLink from "./NavbarLink";
 import Image from "next/image";
 import Link from "next/link";

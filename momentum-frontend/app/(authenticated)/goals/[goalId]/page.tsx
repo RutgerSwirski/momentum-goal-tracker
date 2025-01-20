@@ -1,8 +1,8 @@
 "use client";
 
-import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
+import Breadcrumbs from "@/components/common/Breadcrumbs";
 import TaskList from "@/components/lists/taskList/TaskList";
-import ProgressBar from "@/components/progressBar/ProgressBar";
+import ProgressBar from "@/components/common/ProgressBar";
 import axiosInstance from "@/utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";

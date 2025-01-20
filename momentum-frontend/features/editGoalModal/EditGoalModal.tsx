@@ -1,5 +1,5 @@
-import PrimaryButton from "@/components/buttons/PrimaryButton";
-import Modal from "@/components/modal/Modal";
+import PrimaryButton from "@/components/common/buttons/PrimaryButton";
+import Modal from "@/components/common/Modal";
 import axiosInstance from "@/utils/axiosInstance";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";

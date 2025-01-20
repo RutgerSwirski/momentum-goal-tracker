@@ -1,7 +1,7 @@
 // components/pages/GoalPage/GoalProgress.jsx
 
-import Card from "@/components/card/Card";
-import ProgressBar from "@/components/progressBar/ProgressBar";
+import Card from "@/components/common/Card";
+import ProgressBar from "@/components/common/ProgressBar";
 
 const GoalProgress = ({ goalProgress }) => (
   <ProgressBar

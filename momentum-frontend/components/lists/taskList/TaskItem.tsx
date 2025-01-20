@@ -1,6 +1,6 @@
 "use client";
 
-import ProgressBar from "@/components/progressBar/ProgressBar";
+import ProgressBar from "@/components/common/ProgressBar";
 import { useState } from "react";
 import StepList from "../stepList/StepList";
 import axiosInstance from "@/utils/axiosInstance";

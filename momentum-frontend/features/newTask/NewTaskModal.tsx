@@ -1,7 +1,7 @@
 "use client";
 
-import PrimaryButton from "@/components/buttons/PrimaryButton";
-import Modal from "@/components/modal/Modal";
+import PrimaryButton from "@/components/common/buttons/PrimaryButton";
+import Modal from "@/components/common/Modal";
 import axiosInstance from "@/utils/axiosInstance";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";

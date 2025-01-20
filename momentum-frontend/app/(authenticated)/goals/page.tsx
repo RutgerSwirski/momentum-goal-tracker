@@ -1,6 +1,6 @@
 "use client";
 
-import ProgressBar from "@/components/progressBar/ProgressBar";
+import ProgressBar from "@/components/common/ProgressBar";
 import NewGoalModal from "@/features/goalWizard/GoalWizardModal";
 import { fetchGoals } from "@/services/goals/goalService";
 import { useQuery } from "@tanstack/react-query";
@@ -28,7 +28,7 @@ const GoalsPage = () => {
           <NewGoalModal />
         </div>
 
-        <div className="flex justify-between items-center mb-4 flex-wrap gap-4">
+        <div className="flex justify-between items-center mb-4 lg:flex-nowrap flex-wrap gap-4">
           <div>
             <label className="text-sm font-medium text-gray-900">Search</label>
 

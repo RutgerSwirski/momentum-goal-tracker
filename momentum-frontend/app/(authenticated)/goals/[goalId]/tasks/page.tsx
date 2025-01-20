@@ -1,5 +1,5 @@
 "use client";
-import Breadcrumbs from "@/components/breadcrumbs/Breadcrumbs";
+import Breadcrumbs from "@/components/common/Breadcrumbs";
 // const GoalsTasksPage = () => {
 //   const { id } = useParams<{ id: string }>();
 //   const { data: goal } = useGoal(id);

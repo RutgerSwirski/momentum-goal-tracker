@@ -14,7 +14,7 @@ const DashboardTable = ({ tasks }: DashboardTableProps) => {
       <h3 className="text-xl font-semibold mb-4">Your Tasks</h3>
 
       {/* Table for Desktop */}
-      <div className="hidden md:block">
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full table-auto border-collapse rounded-lg">
           <thead>
             <tr className="bg-gray-100">

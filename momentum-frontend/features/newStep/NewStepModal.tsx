@@ -1,4 +1,4 @@
-import Modal from "@/components/modal/Modal";
+import Modal from "@/components/common/Modal";
 import { Button, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useState } from "react";
 

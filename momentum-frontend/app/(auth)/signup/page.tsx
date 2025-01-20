@@ -1,6 +1,6 @@
 "use client";
 
-import PrimaryButton from "@/components/buttons/PrimaryButton";
+import PrimaryButton from "@/components/common/buttons/PrimaryButton";
 import AuthHeader from "@/app/(auth)/components/AuthHeader";
 import AuthLayout from "@/app/(auth)/components/AuthLayout";
 import axiosInstance from "@/utils/axiosInstance";
