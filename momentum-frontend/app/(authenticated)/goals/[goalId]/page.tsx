@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import GoalMetadata from "./components/GoalMetadata";
 import NextStep from "./components/NextStep";
 import NewTaskModal from "@/features/newTask/NewTaskModal";
+import EditGoalModal from "@/features/editGoalModal/EditGoalModal";
 
 const GoalPage = () => {
   const { goalId } = useParams();
@@ -84,12 +85,14 @@ const GoalPage = () => {
 
       {/* Header Section */}
       <div className="space-y-4">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center flex-wrap">
           <h1 className="text-3xl font-semibold text-gray-900">{goal?.name}</h1>
 
-          <EditGoalModal goal={goal} />
+          <div className="flex space-x-4">
+            <EditGoalModal goal={goal} />
 
-          <NewTaskModal />
+            <NewTaskModal />
+          </div>
         </div>
         {goal?.description && (
           <div className="space-y-2">

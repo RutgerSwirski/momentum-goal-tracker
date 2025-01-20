@@ -16,7 +16,7 @@ const GoalsPage = () => {
   return (
     <>
       <div>
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4 flex-wrap gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Your Goals</h1>
             <p className="text-base text-gray-600">
@@ -28,7 +28,7 @@ const GoalsPage = () => {
           <NewGoalModal />
         </div>
 
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-4 flex-wrap gap-4">
           <div>
             <label className="text-sm font-medium text-gray-900">Search</label>
 
@@ -39,7 +39,7 @@ const GoalsPage = () => {
             />
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 w-full">
             {/* filters */}
             <div>
               <label className="text-sm font-medium text-gray-900">

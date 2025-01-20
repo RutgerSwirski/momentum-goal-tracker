@@ -3,11 +3,12 @@ import Link from "next/link";
 type NavbarLinkProps = {
   href: string;
   children: React.ReactNode;
+  className?: string;
 };
 
-const NavbarLink = ({ href, children }: NavbarLinkProps) => {
+const NavbarLink = ({ href, children, className }: NavbarLinkProps) => {
   return (
-    <li className="text-white font-semibold text-base">
+    <li className={className}>
       <Link href={href}>{children}</Link>
     </li>
   );
