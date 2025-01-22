@@ -23,7 +23,7 @@ const TrendingChallenges: React.FC<TrendingChallengesProps> = ({
   challenges,
 }) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 col-span-2 row-span-1">
       {/* Section Title */}
       <Text type="subheading" className="font-semibold text-2xl">
         Trending Challenges

@@ -13,7 +13,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   rightContent,
 }) => {
   return (
-    <div className="flex justify-between items-center space-y-1">
+    <div className="flex justify-between md:items-center space-y-1 flex-col md:flex-row gap-4">
       {/* Title and Subtitle */}
       <div className="flex flex-col space-y-1">
         <Text

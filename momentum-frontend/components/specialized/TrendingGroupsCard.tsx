@@ -17,11 +17,11 @@ type TrendingGroupsCard = {
 
 const TrendingGroupsCard = ({ groups }: TrendingGroupsCard) => {
   return (
-    <div className="space-y-6 col-span-1">
+    <div className="space-y-6 col-span-2 md:col-span-1 row-span-2">
       <Text type="subheading" className="font-semibold text-2xl">
         Trending Groups
       </Text>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6">
         {groups.map((group) => (
           <Card key={group.id} className="p-4">
             <div className="flex justify-between items-center">

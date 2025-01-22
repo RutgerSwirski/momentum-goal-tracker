@@ -20,7 +20,7 @@ type FeaturedGoalsProps = {
 
 const FeaturedGoals: React.FC<FeaturedGoalsProps> = ({ goals }) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 col-span-2 row-span-2">
       <Text type="subheading" className="font-semibold text-2xl">
         Featured Goals
       </Text>

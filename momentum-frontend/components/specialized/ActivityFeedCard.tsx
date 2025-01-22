@@ -26,11 +26,7 @@ const ActivityFeedCard: React.FC<ActivityFeedCardProps> = ({
   recentActivities,
 }) => {
   return (
-    <div
-      className="space-y-6 
-    md:col-span-1
-    "
-    >
+    <div className="space-y-6 col-span-2">
       <Text type="subheading" className="font-semibold text-2xl">
         Activity Feed
       </Text>
@@ -39,31 +35,43 @@ const ActivityFeedCard: React.FC<ActivityFeedCardProps> = ({
           <Card key={activity.id}>
             <div
               key={activity.id}
-              className="flex items-center gap-4 border-b pb-4 last:border-b-0 last:pb-0"
+              className="flex gap-4 border-b pb-4 last:border-b-0 last:pb-0 flex-col"
             >
-              <Avatar
-                src={activity.avatar}
-                alt={activity.name}
-                className=""
-                size="lg"
-              />
-              <div className="flex-1 ">
+              <div className="flex items-center gap-4">
+                <Avatar
+                  src={activity.avatar}
+                  alt={activity.name}
+                  className=""
+                  size="lg"
+                />
                 <Text type="body" className="font-medium ">
-                  {activity.name} achieved: {activity.achievement}
+                  {activity.name}
                 </Text>
-                <div className="flex items-center justify-between ">
-                  <Text type="bodySmall" className="text-gray-500 ">
-                    Goal: {activity.goal}
-                  </Text>
+              </div>
+              <Text type="bodySmall" className="text-gray-500 ">
+                {activity.achievement}
+              </Text>
+
+              <div className="flex md:items-center justify-between flex-col md:flex-row gap-4">
+                <Text type="bodySmall" className="text-gray-500 ">
+                  Goal: {activity.goal}
+                </Text>
+                <div className="max-w-xs w-full">
+                  <ProgressBar
+                    completed={parseInt(activity.progress)}
+                    total={100}
+                  />
+                </div>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex gap-4 text-gray-500 ">
+                  <HandThumbUpIcon className="cursor-pointer hover:text-gray-700 w-6 h-6" />
+                  <ChatBubbleLeftIcon className="cursor-pointer hover:text-gray-700 w-6 h-6" />
+                  <ShareIcon className="cursor-pointer hover:text-gray-700 w-6 h-6" />
                 </div>
                 <Text type="bodySmall" className="text-gray-400 ">
                   {activity.timeAgo}
                 </Text>
-              </div>
-              <div className="flex gap-4 text-gray-500 ">
-                <HandThumbUpIcon className="cursor-pointer hover:text-gray-700 w-6 h-6" />
-                <ChatBubbleLeftIcon className="cursor-pointer hover:text-gray-700 w-6 h-6" />
-                <ShareIcon className="cursor-pointer hover:text-gray-700 w-6 h-6" />
               </div>
             </div>
           </Card>

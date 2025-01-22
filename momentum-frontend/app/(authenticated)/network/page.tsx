@@ -4,9 +4,11 @@ import Grid from "@/components/common/Grid";
 import PageHeader from "@/components/common/PageHeader";
 import Text from "@/components/common/Text";
 import ActivityFeedCard from "@/components/specialized/ActivityFeedCard";
+import EventsCard from "@/components/specialized/UpcomingEvents";
 import FeaturedGoals from "@/components/specialized/FeaturedGoals";
 import TrendingChallenges from "@/components/specialized/TrendingChallenges";
 import TrendingGroupsCard from "@/components/specialized/TrendingGroupsCard";
+import UpcomingEvents from "@/components/specialized/UpcomingEvents";
 
 const NetworkPage = () => {
   return (
@@ -28,7 +30,7 @@ const NetworkPage = () => {
         <Button>Search</Button>
       </div>
 
-      <Grid columns={3} gap={6} responsive>
+      <Grid columns={3} gap={6}>
         <ActivityFeedCard
           recentActivities={[
             {
@@ -201,20 +203,37 @@ const NetworkPage = () => {
           </Card>
         </div>
 
-        <div>
-          {/* Events Card */}
-          <Text type="subheading" className="font-semibold text-2xl">
-            Events
-          </Text>
-          <Card className="lg:col-span-2 lg:row-span-1">
-            <p>
-              Event Title and Date
-              <br />
-              Description
-            </p>
-            <Button>RSVP</Button>
-          </Card>
-        </div>
+        <UpcomingEvents
+          events={[
+            {
+              id: "1",
+              title: "Event 1",
+              description: "Description 1",
+              participants: 10,
+              startDate: "2021-10-01",
+              endDate: "2021-10-31",
+              isTrending: true,
+            },
+            {
+              id: "2",
+              title: "Event 2",
+              description: "Description 2",
+              participants: 20,
+              startDate: "2021-10-01",
+              endDate: "2021-10-31",
+              isTrending: false,
+            },
+            {
+              id: "3",
+              title: "Event 3",
+              description: "Description 3",
+              participants: 30,
+              startDate: "2021-10-01",
+              endDate: "2021-10-31",
+              isTrending: true,
+            },
+          ]}
+        />
       </Grid>
     </>
   );
