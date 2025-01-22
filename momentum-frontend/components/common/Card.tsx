@@ -10,7 +10,7 @@ const Card: React.FC<CardProps> = ({ children, onClick, className = "" }) => {
   return (
     <div
       onClick={onClick}
-      className={`border bg-white rounded-lg shadow-sm overflow-hidden p-6 ${
+      className={`border bg-white rounded-lg shadow-sm overflow-hidden space-y-8 p-6 ${
         onClick
           ? "cursor-pointer transform transition-transform hover:scale-105"
           : ""

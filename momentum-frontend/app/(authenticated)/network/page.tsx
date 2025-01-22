@@ -3,6 +3,10 @@ import Card from "@/components/common/Card";
 import Grid from "@/components/common/Grid";
 import PageHeader from "@/components/common/PageHeader";
 import Text from "@/components/common/Text";
+import ActivityFeedCard from "@/components/specialized/ActivityFeedCard";
+import FeaturedGoals from "@/components/specialized/FeaturedGoals";
+import TrendingChallenges from "@/components/specialized/TrendingChallenges";
+import TrendingGroupsCard from "@/components/specialized/TrendingGroupsCard";
 
 const NetworkPage = () => {
   return (
@@ -15,7 +19,7 @@ const NetworkPage = () => {
 
       {/* Search Bar */}
 
-      <div className="flex justify-center">
+      <div className="flex justify-center gap-12">
         <input
           type="text"
           placeholder="Search for groups, events, or users"
@@ -25,93 +29,192 @@ const NetworkPage = () => {
       </div>
 
       <Grid columns={3} gap={6} responsive>
-        {/* Activity Feed Card */}
-        <Card className="lg:col-span-2 lg:row-span-1">
-          <Text type="subheading" className="font-semibold">
-            Activity Feed
-          </Text>
-          <p>
-            Avatar - Update name / Achievement
-            <br />
-            Goal name - Progress
-            <br />
-            Icons - Link - Comment - Share
-            <br />
-            Time ago
-          </p>
-        </Card>
+        <ActivityFeedCard
+          recentActivities={[
+            {
+              id: "1",
+              avatar: "https://randomuser.me/api/portraits/men/15.jpg",
+              name: "John Doe",
+              achievement: "Completed 30-day coding challenge",
+              goal: "Coding",
+              progress: "100",
+              timeAgo: "2 hours ago",
+            },
+            {
+              id: "2",
+              avatar: "https://randomuser.me/api/portraits/women/15.jpg",
+              name: "Jane Doe",
+              achievement: "Meditated for 30 minutes",
+              goal: "Meditation",
+              progress: "50",
+              timeAgo: "3 hours ago",
+            },
+            {
+              id: "3",
+              avatar: "https://randomuser.me/api/portraits/men/16.jpg",
+              name: "Random User",
+              achievement: "Completed 30-day coding challenge",
+              goal: "Coding",
+              progress: "100",
+              timeAgo: "2 hours ago",
+            },
+          ]}
+        />
 
-        {/* Groups and Challenges Card */}
-        <Card className="lg:col-span-1 lg:row-span-2">
-          <Text type="subheading" className="font-semibold">
-            Groups and Challenges
-          </Text>
-          <p>
-            Group name
-            <br />
-            Description
-            <br />
-            Trending badge (members)
-          </p>
-          <Button>Join Group</Button>
-        </Card>
+        <TrendingGroupsCard
+          groups={[
+            {
+              id: "1",
+              name: "Group 1",
+              description: "Description 1",
+              trendingBadge: "Trending badge 1",
+            },
+            {
+              id: "2",
+              name: "Group 2",
+              description: "Description 2",
+              trendingBadge: "Trending badge 2",
+            },
+            {
+              id: "3",
+              name: "Group 3",
+              description: "Description 3",
+              trendingBadge: "Trending badge 3",
+            },
+          ]}
+        />
+
+        {/* Challenges Card */}
+        <TrendingChallenges
+          challenges={[
+            {
+              id: "1",
+              title: "Challenge 1",
+              description: "Description 1",
+              participants: 10,
+              startDate: "2021-10-01",
+              endDate: "2021-10-31",
+              progress: 50,
+              isTrending: true,
+            },
+            {
+              id: "2",
+              title: "Challenge 2",
+              description: "Description 2",
+              participants: 20,
+              startDate: "2021-10-01",
+              endDate: "2021-10-31",
+              progress: 75,
+              isTrending: false,
+            },
+            {
+              id: "3",
+              title: "Challenge 3",
+              description: "Description 3",
+              participants: 30,
+              startDate: "2021-10-01",
+              endDate: "2021-10-31",
+              progress: 100,
+              isTrending: true,
+            },
+          ]}
+        />
 
         {/* Featured Goals Card */}
-        <Card className="lg:col-span-1 lg:row-span-1">
-          <Text type="subheading" className="font-semibold">
-            Featured Goals
-          </Text>
-          <p>
-            Avatar - User’s Goal: Goal Name
-            <br />
-            Task Name
-          </p>
-          <Button>Encourage</Button>
-        </Card>
+        <FeaturedGoals
+          goals={[
+            {
+              id: "1",
+              userAvatar: "https://randomuser.me/api/portraits",
+              userName: "John Doe",
+              title: "Goal 1",
+              category: "Category 1",
+              progress: 50,
+            },
+            {
+              id: "2",
+              userAvatar: "https://randomuser.me/api/portraits",
+              userName: "Jane Doe",
+              title: "Goal 2",
+              category: "Category 2",
+              progress: 75,
+            },
+            {
+              id: "3",
+              userAvatar: "https://randomuser.me/api/portraits",
+              userName: "Random User",
+              title: "Goal 3",
+              category: "Category 3",
+              progress: 100,
+            },
+            {
+              id: "4",
+              userAvatar: "https://randomuser.me/api/portraits",
+              userName: "Random User",
+              title: "Goal 4",
+              category: "Category 4",
+              progress: 100,
+            },
+            {
+              id: "5",
+              userAvatar: "https://randomuser.me/api/portraits",
+              userName: "Random User",
+              title: "Goal 5",
+              category: "Category 5",
+              progress: 100,
+            },
+          ]}
+        />
 
         {/* Knowledge Sharing Card */}
-        <Card className="lg:col-span-1 lg:row-span-1">
-          <Text type="subheading" className="font-semibold">
+        {/* <div>
+          <Text type="subheading" className="font-semibold text-2xl">
             Knowledge Sharing
           </Text>
-          <p>
-            Title of the post/resource
-            <br />
-            Thumbnail
-            <br />
-            Preview snippet
-          </p>
-          <Button>Read More</Button>
-        </Card>
+          <Card className="lg:col-span-1 lg:row-span-1">
+            <p>
+              Title of the post/resource
+              <br />
+              Thumbnail
+              <br />
+              Preview snippet
+            </p>
+            <Button>Read More</Button>
+          </Card>
+        </div> */}
 
         {/* User Connections Card */}
-        <Card className="lg:col-span-1 lg:row-span-1">
-          <Text type="subheading" className="font-semibold">
+        <div>
+          <Text type="subheading" className="font-semibold text-2xl">
             User Connections
           </Text>
-          <p>
-            Avatar - Name - Bio
-            <br />
-            Shared Goals: Coding, Meditation
-          </p>
-          <div className="flex gap-2">
-            <Button>Follow</Button>
-            <Button>Message</Button>
-          </div>
-        </Card>
+          <Card className="lg:col-span-1 lg:row-span-1">
+            <p>
+              Avatar - Name - Bio
+              <br />
+              Shared Goals: Coding, Meditation
+            </p>
+            <div className="flex gap-2">
+              <Button>Follow</Button>
+              <Button>Message</Button>
+            </div>
+          </Card>
+        </div>
 
-        {/* Events Card */}
-        <Card className="lg:col-span-2 lg:row-span-1">
-          <Text type="subheading" className="font-semibold">
+        <div>
+          {/* Events Card */}
+          <Text type="subheading" className="font-semibold text-2xl">
             Events
           </Text>
-          <p>
-            Event Title and Date
-            <br />
-            Description
-          </p>
-          <Button>RSVP</Button>
-        </Card>
+          <Card className="lg:col-span-2 lg:row-span-1">
+            <p>
+              Event Title and Date
+              <br />
+              Description
+            </p>
+            <Button>RSVP</Button>
+          </Card>
+        </div>
       </Grid>
     </>
   );

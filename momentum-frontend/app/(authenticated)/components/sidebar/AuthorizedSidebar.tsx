@@ -92,14 +92,14 @@ const AuthorizedSidebar = () => {
     >
       {/* Logo */}
       <Link href="/">
-        {isExpanded ? (
-          <Image
-            src="/images/logo.svg"
-            alt="Momentum Logo"
-            width={150} // Set explicit width for the expanded logo
-            height={64} // Set explicit height for the expanded logo
-            className="object-contain" // Ensures the image scales properly within its dimensions
-          />
+        <Image
+          src="/images/logo.svg"
+          alt="Momentum Logo"
+          width={150} // Set explicit width for the expanded logo
+          height={64} // Set explicit height for the expanded logo
+          // className="object-contain" // Ensures the image scales properly within its dimensions
+        />
+        {/* {isExpanded ? (
         ) : (
           <Image
             src="/images/Logo.svg"
@@ -111,7 +111,7 @@ const AuthorizedSidebar = () => {
             }`}
             style={{ flexShrink: 0 }} // Prevent shrink behavior
           />
-        )}
+        )} */}
       </Link>
 
       {/* Expand/Collapse Button */}

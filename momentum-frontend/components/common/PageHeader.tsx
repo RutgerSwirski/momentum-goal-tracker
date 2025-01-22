@@ -18,14 +18,14 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       <div className="flex flex-col space-y-1">
         <Text
           type="heading"
-          className="text-2xl md:text-4xl font-semibold text-neutral_charcoal"
+          className="text-4xl md:text-4xl font-semibold text-neutral_charcoal"
         >
           {title}
         </Text>
         {subtitle && (
           <Text
             type="subheading"
-            className="text-sm md:text-lg font-normal text-neutral_dark_grey"
+            className="text-md md:text-lg font-normal text-neutral_dark_grey"
           >
             {subtitle}
           </Text>
