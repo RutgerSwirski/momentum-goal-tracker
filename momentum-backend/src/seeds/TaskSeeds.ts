@@ -7,15 +7,15 @@ const seedTasks = async () => {
       name: faker.lorem.words(),
       description: faker.lorem.sentence(),
       dueDate: faker.date.future(),
-      status: faker.random.arrayElement([
+      status: faker.helpers.arrayElement([
         "pending",
         "in-progress",
         "completed",
       ]),
       notes: Array.from({ length: 5 }).map(() => faker.lorem.sentence()),
-      order: faker.random.number(),
+      order: faker.number.int({ min: 1, max: 10 }),
       dateCompleted: faker.date.past(),
-      deleted: faker.random.boolean(),
+      deleted: faker.datatype.boolean(),
     };
   });
 

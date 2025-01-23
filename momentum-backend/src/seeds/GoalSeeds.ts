@@ -7,13 +7,13 @@ const seedGoals = async () => {
       name: faker.lorem.words(),
       description: faker.lorem.sentence(),
       dueDate: faker.date.future(),
-      status: faker.random.arrayElement([
+      status: faker.helpers.arrayElement([
         "pending",
         "in-progress",
         "completed",
       ]),
-      priority: faker.random.arrayElement(["low", "medium", "high"]),
-      category: faker.random.arrayElement([
+      priority: faker.helpers.arrayElement(["low", "medium", "high"]),
+      category: faker.helpers.arrayElement([
         "work",
         "personal",
         "fitness",
@@ -21,7 +21,7 @@ const seedGoals = async () => {
         "social",
       ]),
       dateCompleted: faker.date.past(),
-      deleted: faker.random.boolean(),
+      deleted: faker.datatype.boolean(),
     };
   });
   await Goal.insertMany(goals);

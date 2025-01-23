@@ -6,10 +6,15 @@ const seedSteps = async () => {
     return {
       name: faker.lorem.words(),
       description: faker.lorem.sentence(),
-      status: faker.random.arrayElement(["pending", "completed"]),
+      status: faker.helpers.arrayElement([
+        "pending",
+        "in-progress",
+        "completed",
+      ]),
+
       dateCompleted: faker.date.past(),
       dueDate: faker.date.future(),
-      deleted: faker.random.boolean(),
+      deleted: faker.datatype.boolean(),
     };
   });
   await Step.insertMany(steps);

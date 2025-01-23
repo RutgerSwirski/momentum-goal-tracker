@@ -1,5 +1,7 @@
+# Use Node.js base image
 FROM node:18
 
+# Set the working directory
 WORKDIR /app
 
 # Copy package.json and tsconfig.json
@@ -9,27 +11,10 @@ COPY package.json tsconfig.json ./
 RUN npm install
 
 # Copy the source code
-COPY src ./src
+COPY . .
 
 # Compile TypeScript files to JavaScript
 RUN npx tsc
-
-# Expose the backend port
-EXPOSE 5000
-
-# Run the compiled JavaScript file
-# Use Node.js base image
-FROM node:18
-
-# Set working directory
-WORKDIR /app
-
-# Copy package.json and install dependencies
-COPY package.json ./
-RUN npm install
-
-# Copy the rest of the backend files
-COPY . .
 
 # Expose the backend port
 EXPOSE 5000

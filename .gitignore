@@ -52,3 +52,6 @@
 /momentum-frontend/.next
 
 MVPFeatures.txt
+
+# dist folder in backend
+/momentum-backend/dist

@@ -38,7 +38,7 @@ services:
       - "5000:5000"
     volumes:
       - ./momentum-backend:/app
-    command: ["npx", "nodemon", "--watch", "./src", "--ext", "js,ts,json", "--exec", "npx ts-node ./src/index.ts"]
+    command: ["npx", "nodemon", "--watch", "src", "--ext", "js,ts,json", "--exec", "npx ts-node src/index.ts"]
     environment:
       NODE_ENV: development
       MONGO_URI: mongodb://root:example@momentum_db:27017
