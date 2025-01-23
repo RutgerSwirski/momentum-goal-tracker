@@ -1,17 +1,21 @@
 import { useAtom } from "jotai";
 import { goalDescriptionAtom } from "../../state/goalWizardAtoms";
-import { Description, Field, Label, Textarea } from "@headlessui/react";
+import Label from "@/components/common/Label";
+import Description from "@/components/common/Description";
+import Textarea from "@/components/common/Textarea";
+import { Field } from "@headlessui/react";
 
 const GoalDescriptionField = () => {
   const [goalDescription, setGoalDescription] = useAtom(goalDescriptionAtom);
 
   return (
     <Field>
-      <Label className="text-sm/6 font-medium text-gray-900">Description</Label>
-      <Description className="text-sm/6 text-gray-600">
+      <Label>Description</Label>
+      <Description>
         Add more details about your goal to keep you motivated
       </Description>
       <Textarea
+        name="goalDescription"
         value={goalDescription}
         onChange={(e) => setGoalDescription(e.target.value)}
         placeholder="e.g. I want to run a marathon in under 4 hours"
