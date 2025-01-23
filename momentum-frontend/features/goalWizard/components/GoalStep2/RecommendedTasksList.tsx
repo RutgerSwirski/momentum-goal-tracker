@@ -33,6 +33,10 @@ const RecommendedTasksList = () => {
     ]);
   };
 
+  if (!recommendedTasks) {
+    return null;
+  }
+
   return (
     <div>
       <h3 className="text-md font-semibold text-gray-900">Recommended Tasks</h3>

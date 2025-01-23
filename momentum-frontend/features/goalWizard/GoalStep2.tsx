@@ -14,6 +14,9 @@ const GoalStep2 = () => {
         {/* Existing Tasks List */}
         <ExistingTasksList />
 
+        {/* border horizontal */}
+        <div className="border-t border-gray-200" />  
+
         {/* Add New Task Form */}
         <AddTaskForm />
       </div>

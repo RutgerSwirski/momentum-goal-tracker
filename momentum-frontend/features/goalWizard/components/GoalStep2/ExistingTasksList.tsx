@@ -15,6 +15,10 @@ const ExistingTasksList = () => {
     setTasks((prev) => prev.filter((_, i) => i !== index));
   };
 
+  if (tasks.length === 0) {
+    return null;
+  }
+
   return (
     <div>
       <h3 className="text-md font-semibold text-gray-900">Your Tasks</h3>

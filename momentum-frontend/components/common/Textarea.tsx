@@ -1,6 +1,5 @@
 import { Textarea as HeadlessTextarea } from "@headlessui/react";
 
-
 type TextareaProps = {
   name: string;
   rows?: number;
@@ -14,7 +13,7 @@ const Textarea = ({ name, rows = 3, placeholder, ...props }: TextareaProps) => (
     name={name}
     rows={rows}
     placeholder={placeholder}
-    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+    className={`block p-4 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
     {...props}
   />
 );
