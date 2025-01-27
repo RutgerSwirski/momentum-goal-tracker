@@ -22,6 +22,7 @@ const TaskItem = ({ task }: { task: any }) => {
         <input
           // onChange={() => markStepComplete()}
           type="checkbox"
+          onChange={() => console.log("checked")}
           checked={task.status === "completed"}
           className="w-5 h-5 text-green-500 border-gray-300 rounded focus:ring-green-400"
         />

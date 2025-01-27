@@ -55,3 +55,6 @@ MVPFeatures.txt
 
 # dist folder in backend
 /momentum-backend/dist
+
+# fixed users seed file 
+/momentum-backend/src/seeds/fixedUsers.json

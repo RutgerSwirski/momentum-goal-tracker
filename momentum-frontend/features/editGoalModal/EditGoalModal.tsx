@@ -8,7 +8,11 @@ import { DialogTitle, Fieldset } from "@headlessui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
-const EditGoalModal = ({ goal }) => {
+const EditGoalModal = ({
+  goal,
+}: {
+  goal: { name: string; description: string };
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { mutate } = useMutation({
@@ -29,7 +33,7 @@ const EditGoalModal = ({ goal }) => {
           <Input
             label="Goal Name"
             placeholder="Enter the name of your goal"
-            value={goal.name}
+            value={goal?.name}
             onChange={(e) => {
               goal.name = e.target.value;
             }}
@@ -37,7 +41,7 @@ const EditGoalModal = ({ goal }) => {
           <Textarea
             label="Goal Description"
             placeholder="Enter the description of your goal"
-            value={goal.description}
+            value={goal?.description}
             onChange={(e) => {
               goal.description = e.target.value;
             }}
