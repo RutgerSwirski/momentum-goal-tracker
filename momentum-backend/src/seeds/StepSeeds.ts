@@ -1,9 +1,10 @@
 import Step from "../models/Step";
 import { faker } from "@faker-js/faker";
 
-const seedSteps = async () => {
-  const steps = Array.from({ length: 10 }).map(() => {
+const seedSteps = async (taskIds: string[]) => {
+  const steps = taskIds.flatMap((taskId) => {
     return {
+      taskId,
       name: faker.lorem.words(),
       description: faker.lorem.sentence(),
       status: faker.helpers.arrayElement([

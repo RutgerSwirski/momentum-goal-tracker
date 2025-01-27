@@ -20,7 +20,7 @@ const stepSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "completed"],
+      enum: ["pending", "completed", "in-progress"],
       default: "pending",
     },
     dateCompleted: {

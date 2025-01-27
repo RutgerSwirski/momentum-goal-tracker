@@ -1,9 +1,10 @@
 import Goal from "../models/Goal";
 import { faker } from "@faker-js/faker";
 
-const seedGoals = async () => {
-  const goals = Array.from({ length: 10 }).map(() => {
+const seedGoals = async (userIds: string[]) => {
+  const goals = userIds.flatMap((userId) => {
     return {
+      userId,
       name: faker.lorem.words(),
       description: faker.lorem.sentence(),
       dueDate: faker.date.future(),
