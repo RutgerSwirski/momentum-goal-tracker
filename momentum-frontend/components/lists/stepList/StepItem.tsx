@@ -51,7 +51,10 @@ const StepItem = ({ step }) => {
             >
               {step.status === "completed" ? "Completed" : "Pending"}
             </p>
-            <button className="text-blue-600 w-fit hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+            <button
+              onClick={() => markStepComplete()}
+              className="text-blue-600 w-fit hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+            >
               Mark as Complete
             </button>
           </div>
