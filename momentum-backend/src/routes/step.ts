@@ -4,15 +4,16 @@ import {
   deleteStep,
   getStep,
   getSteps,
+  markStepComplete,
   updateStep,
 } from "../controllers/stepController";
-import authenticateUser from "../middleware/authenticateUser";
 
 const router = express.Router();
 
-router.get("/", authenticateUser, getSteps);
+router.get("/", getSteps);
 router.get("/:id", getStep);
 router.put("/:id", updateStep);
 router.delete("/:id", deleteStep);
+router.post("/:id/complete", markStepComplete);
 
 export default router;

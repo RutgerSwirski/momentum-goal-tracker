@@ -8,6 +8,12 @@ const stepSchema = new Schema(
       required: true,
       index: true,
     },
+    goalId: {
+      type: Schema.Types.ObjectId,
+      ref: "Goal",
+      required: true,
+      index: true,
+    },
     name: {
       type: String,
       required: true,

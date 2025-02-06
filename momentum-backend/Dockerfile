@@ -23,4 +23,4 @@ RUN npx tsc
 EXPOSE 5000
 
 # Default command to seed database and start the backend
-CMD ["sh", "-c", "npx ts-node src/seeds/index.ts && npx nodemon --watch ./src --ext js,ts,json --exec node ./dist/index.js"]
+CMD ["sh", "-c", "npx ts-node src/seeds/index.ts && npx nodemon --watch ./src --ext ts,json --exec npx ts-node src/index.ts"]

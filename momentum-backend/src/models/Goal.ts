@@ -49,6 +49,10 @@ const goalSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    progress: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: {

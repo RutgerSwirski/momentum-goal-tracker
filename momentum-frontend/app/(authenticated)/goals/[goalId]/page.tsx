@@ -149,13 +149,8 @@ const GoalPage = () => {
               {!goalProgressIsLoading && !progressIsError && (
                 <ProgressBar
                   size="md"
-                  completed={
-                    goalProgress?.completedTasks +
-                      goalProgress?.completedSteps || 0
-                  }
-                  total={
-                    goalProgress?.totalTasks + goalProgress?.totalSteps || 1
-                  }
+                  completed={goal.progress || 0}
+                  total={100}
                 />
               )}
             </div>

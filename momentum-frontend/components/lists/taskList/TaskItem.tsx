@@ -73,10 +73,7 @@ const TaskItem = ({ task }: { task: any }) => {
 
               <div className="flex flex-1 justify-end">
                 <div className="max-w-xs w-full">
-                  <ProgressBar
-                    completed={(Math.random() * 100).toFixed(0)}
-                    total={100}
-                  />
+                  <ProgressBar completed={task.progress || 0} total={100} />
                 </div>
               </div>
             </div>

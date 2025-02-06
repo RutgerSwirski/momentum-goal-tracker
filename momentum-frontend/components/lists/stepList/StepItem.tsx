@@ -2,14 +2,20 @@
 
 import axiosInstance from "@/utils/axiosInstance";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const StepItem = ({ step }) => {
+  const queryClient = useQueryClient();
   const { mutate: markStepComplete } = useMutation({
     mutationFn: async () =>
-      await axiosInstance.put(`/steps/${step._id}`, {
-        status: "completed",
-      }),
+      await axiosInstance.post(`/steps/${step._id}/complete`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["steps", step.taskId] });
+      // invalidate the task query as well
+      queryClient.invalidateQueries({ queryKey: ["tasks", step.goalId] });
+      // invalidate the goal query as well
+      queryClient.invalidateQueries({ queryKey: ["goal", step.goalId] });
+    },
   });
 
   const { mutate: deleteStep } = useMutation({
@@ -51,12 +57,14 @@ const StepItem = ({ step }) => {
             >
               {step.status === "completed" ? "Completed" : "Pending"}
             </p>
-            <button
-              onClick={() => markStepComplete()}
-              className="text-blue-600 w-fit hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-            >
-              Mark as Complete
-            </button>
+            {step.status !== "completed" && (
+              <button
+                onClick={() => markStepComplete()}
+                className="text-blue-600 w-fit hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              >
+                Mark as Complete
+              </button>
+            )}
           </div>
         </div>
       </div>
