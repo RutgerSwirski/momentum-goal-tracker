@@ -11,7 +11,6 @@ const goalSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      maxlength: 100,
     },
     description: {
       type: String,

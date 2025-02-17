@@ -5,8 +5,6 @@ import jwt from "jsonwebtoken";
 
 export const getDashboard = async (req: any, res: any) => {
   try {
-    const { id } = req.params;
-
     // get the token from the cookies
     const token = req.cookies?.authToken;
 
@@ -18,37 +16,35 @@ export const getDashboard = async (req: any, res: any) => {
     //get the userId from the decoded user
     const userId = decoded.id;
 
-    // get goals, tasks and steps for the user
-    const goals = await Goal.find({ userId });
+    const today = new Date();
+    const todayStr = today.toISOString().split("T")[0];
 
-    const tasks = await Task.find({ userId });
+    const upcomingGoals = await Goal.find({
+      userId,
+      dueDate: {
+        $gte: today,
+        $lte: new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000),
+      },
+    }).select("name dueDate");
 
-    const steps = await Step.find({ userId });
+    const upcomingTasks = await Task.find({
+      userId,
+      dueDate: {
+        $gte: today,
+        $lte: new Date(today.getTime() + 3 * 24 * 60 * 60 * 1000),
+      },
+    })
+      .select("name dueDate goalId")
+      .populate("goalId", "name");
 
-    // completed goals
-    const completedGoals = goals.filter(
-      (goal) => goal.status === "completed"
-    ).length;
-
-    const completedTasks = tasks.filter(
-      (task) => task.status === "completed"
-    ).length;
-
-    const today = new Date().toISOString().split("T")[0];
-
-    const completedStepsToday = new Set(
-      steps.filter(
-        (step) => step.dateCompleted?.toISOString().split("T")[0] === today
-      )
-    ).size;
-
-    const progressPoints =
-      completedGoals * 5 + completedTasks * 3 + completedStepsToday * 1;
-
-    const totalPossiblePoints =
-      goals.length * 5 + tasks.length * 3 + steps.length * 1;
-
-    const progress = Math.min(progressPoints / totalPossiblePoints, 1);
+    const steps = await Step.find({ userId }).populate({
+      path: "taskId",
+      select: "name goalId",
+      populate: {
+        path: "goalId",
+        select: "name",
+      },
+    });
 
     // get the 5 next steps based on due date
     const nextSteps = steps
@@ -61,13 +57,9 @@ export const getDashboard = async (req: any, res: any) => {
       ) // Sort by date
       .slice(0, 5);
 
-    console.log({ nextSteps, goals, tasks, steps });
-
     return res.status(200).json({
-      progress: progress.toFixed(2),
-      completedGoals,
-      completedTasks,
-      completedStepsToday,
+      upcomingGoals,
+      upcomingTasks,
       nextSteps,
     });
   } catch (error) {

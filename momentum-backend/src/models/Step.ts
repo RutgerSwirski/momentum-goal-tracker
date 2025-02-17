@@ -23,7 +23,6 @@ const stepSchema = new Schema(
     name: {
       type: String,
       required: true,
-      maxlength: 1000,
     },
 
     description: {
