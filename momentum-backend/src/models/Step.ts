@@ -17,7 +17,7 @@ const stepSchema = new Schema(
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: false,
+      required: true,
       index: true,
     },
     name: {
