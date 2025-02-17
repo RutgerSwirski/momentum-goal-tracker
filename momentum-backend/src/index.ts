@@ -14,6 +14,7 @@ import helmet from "helmet";
 import authenticateUser from "./middleware/authenticateUser";
 import taskRoutes from "./routes/task";
 import stepRoutes from "./routes/step";
+import activityRoutes from "./routes/activity";
 
 dotenv.config();
 
@@ -80,6 +81,8 @@ app.use("/users", authenticateUser, userRoutes);
 app.use("/tasks", authenticateUser, taskRoutes);
 
 app.use("/steps", authenticateUser, stepRoutes);
+
+app.use("/activity", authenticateUser, activityRoutes);
 
 connectDB();
 

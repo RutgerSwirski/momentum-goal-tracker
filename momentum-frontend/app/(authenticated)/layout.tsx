@@ -12,7 +12,7 @@ const AuthenticatedLayout = ({ children }: { children: React.ReactNode }) => {
     { href: "/dashboard", icon: Squares2X2Icon, label: "Dashboard" },
     { href: "/goals", icon: FlagIcon, label: "My Goals" },
     { href: "/network", icon: UsersIcon, label: "Network" },
-    { href: "/milestones", icon: TrophyIcon, label: "Milestones" },
+    // { href: "/milestones", icon: TrophyIcon, label: "Milestones" },
     { href: "/account", icon: Cog6ToothIcon, label: "Account" },
   ];
 
