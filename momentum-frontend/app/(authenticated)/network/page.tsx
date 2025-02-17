@@ -1,16 +1,27 @@
+"use client";
+
 import Button from "@/components/common/Button";
 import Card from "@/components/common/Card";
 import Grid from "@/components/common/Grid";
 import PageHeader from "@/components/common/PageHeader";
 import Text from "@/components/common/Text";
 import ActivityFeedCard from "@/components/specialized/ActivityFeedCard";
-import EventsCard from "@/components/specialized/UpcomingEvents";
 import FeaturedGoals from "@/components/specialized/FeaturedGoals";
 import TrendingChallenges from "@/components/specialized/TrendingChallenges";
 import TrendingGroupsCard from "@/components/specialized/TrendingGroupsCard";
 import UpcomingEvents from "@/components/specialized/UpcomingEvents";
+import axiosInstance from "@/utils/axiosInstance";
+import { useQuery } from "@tanstack/react-query";
 
 const NetworkPage = () => {
+  const { data: recentActivity = [] } = useQuery({
+    queryKey: ["activity"],
+    queryFn: async () => {
+      const response = await axiosInstance.get("/activity");
+      return response.data;
+    },
+  });
+
   return (
     <>
       {/* Header Section */}
@@ -21,47 +32,17 @@ const NetworkPage = () => {
 
       {/* Search Bar */}
 
-      <div className="flex justify-center gap-12">
+      {/* <div className="flex justify-center gap-12">
         <input
           type="text"
           placeholder="Search for groups, events, or users"
           className="w-full px-4 py-2 text-lg border border-gray-200 rounded-lg"
         />
         <Button>Search</Button>
-      </div>
+      </div> */}
 
       <Grid columns={3} gap={6}>
-        <ActivityFeedCard
-          recentActivities={[
-            {
-              id: "1",
-              avatar: "https://randomuser.me/api/portraits/men/15.jpg",
-              name: "John Doe",
-              achievement: "Completed 30-day coding challenge",
-              goal: "Coding",
-              progress: "100",
-              timeAgo: "2 hours ago",
-            },
-            {
-              id: "2",
-              avatar: "https://randomuser.me/api/portraits/women/15.jpg",
-              name: "Jane Doe",
-              achievement: "Meditated for 30 minutes",
-              goal: "Meditation",
-              progress: "50",
-              timeAgo: "3 hours ago",
-            },
-            {
-              id: "3",
-              avatar: "https://randomuser.me/api/portraits/men/16.jpg",
-              name: "Random User",
-              achievement: "Completed 30-day coding challenge",
-              goal: "Coding",
-              progress: "100",
-              timeAgo: "2 hours ago",
-            },
-          ]}
-        />
+        <ActivityFeedCard recentActivities={recentActivity} />
 
         <TrendingGroupsCard
           groups={[

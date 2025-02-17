@@ -74,12 +74,12 @@ const AuthorizedSidebar = () => {
     { href: "/dashboard", icon: Squares2X2Icon, label: "Dashboard" },
     { href: "/goals", icon: FlagIcon, label: "My Goals" },
     { href: "/network", icon: UsersIcon, label: "Network" },
-    { href: "/milestones", icon: TrophyIcon, label: "Milestones" },
-    { href: "/calendar", icon: CalendarIcon, label: "Calendar" },
+    // { href: "/milestones", icon: TrophyIcon, label: "Milestones" },
+    // { href: "/calendar", icon: CalendarIcon, label: "Calendar" },
   ];
 
   const bottomLinks = [
-    { href: "/notifications", icon: BellIcon, label: "Notifications" },
+    // { href: "/notifications", icon: BellIcon, label: "Notifications" },
     { href: "/account", icon: Cog6ToothIcon, label: "Account" },
     { href: "/help", icon: QuestionMarkCircleIcon, label: "Help" },
   ];

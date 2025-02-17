@@ -10,13 +10,33 @@ import ProgressBar from "../common/ProgressBar";
 import Text from "../common/Text";
 
 type RecentActivity = {
-  id: string;
-  avatar: string;
-  name: string;
-  achievement: string;
-  goal: string;
-  progress: string;
-  timeAgo: string;
+  // id: string;
+  // avatar: string;
+  // name: string;
+  // achievement: string;
+  // goal: string;
+  // progress: string;
+  // timeAgo: string;
+
+  message: string;
+  shares: string[];
+  encouragements: string[];
+  relatedId: {
+    _id: string;
+    name: string;
+    description: string;
+    status: string;
+  };
+  _id: string;
+  completedAt: string;
+  type: string;
+  comments: string[];
+  userId: {
+    firstName: string;
+    lastName: string;
+    profilePicture: string;
+    email: string;
+  };
 };
 
 type ActivityFeedCardProps = {
@@ -25,6 +45,7 @@ type ActivityFeedCardProps = {
 const ActivityFeedCard: React.FC<ActivityFeedCardProps> = ({
   recentActivities,
 }) => {
+  console.log({ recentActivities });
   return (
     <div className="space-y-6 col-span-2">
       <Text type="subheading" className="font-semibold text-2xl">
@@ -32,35 +53,39 @@ const ActivityFeedCard: React.FC<ActivityFeedCardProps> = ({
       </Text>
       <div className="space-y-4">
         {recentActivities.map((activity) => (
-          <Card key={activity.id}>
+          <Card key={activity._id}>
             <div
-              key={activity.id}
+              key={activity._id}
               className="flex gap-4 border-b pb-4 last:border-b-0 last:pb-0 flex-col"
             >
               <div className="flex items-center gap-4">
-                <Avatar
-                  src={activity.avatar}
-                  alt={activity.name}
-                  className=""
-                  size="lg"
-                />
-                <Text type="body" className="font-medium ">
-                  {activity.name}
-                </Text>
+                <div className="flex items-center gap-4">
+                  <Avatar
+                    src={activity.userId.profilePicture}
+                    alt={activity.userId.firstName}
+                    // className=""
+                    size="lg"
+                  />
+
+                  {/* user first and last name */}
+                  <Text type="body" className="font-medium ">
+                    {activity.userId.firstName} {activity.userId.lastName}
+                  </Text>
+                </div>
               </div>
+              <Text type="body" className="font-medium ">
+                {activity.relatedId.name}
+              </Text>
               <Text type="bodySmall" className="text-gray-500 ">
-                {activity.achievement}
+                {activity.relatedId.description}
               </Text>
 
               <div className="flex md:items-center justify-between flex-col md:flex-row gap-4">
                 <Text type="bodySmall" className="text-gray-500 ">
-                  Goal: {activity.goal}
+                  {activity.type}
                 </Text>
                 <div className="max-w-xs w-full">
-                  <ProgressBar
-                    completed={parseInt(activity.progress)}
-                    total={100}
-                  />
+                  <ProgressBar completed={50} total={100} />
                 </div>
               </div>
               <div className="flex items-center justify-between gap-4">

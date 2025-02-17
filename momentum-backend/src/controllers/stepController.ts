@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+import Activity from "../models/Activity";
 import Goal from "../models/Goal";
 import Step from "../models/Step";
 import Task from "../models/Task";
@@ -77,6 +79,17 @@ export const deleteStep = async (req: any, res: any) => {
 export const markStepComplete = async (req: any, res: any) => {
   const { id } = req.params;
 
+  // get the token from the cookies
+  const token = req.cookies?.authToken;
+
+  //decode the user from the token
+  const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+    id: string;
+  };
+
+  //get the userId from the decoded user
+  const userId = decoded.id;
+
   const step = await Step.findById(id);
 
   if (!step) {
@@ -143,6 +156,18 @@ export const markStepComplete = async (req: any, res: any) => {
 
   // Update goal progress in the database
   await Goal.findByIdAndUpdate(goal._id, { progress: goalProgress });
+
+  try {
+    await Activity.create({
+      userId,
+      type: "Step",
+      relatedId: id,
+      message: `Completed step: ${step.name}`,
+      completedAt: new Date(),
+    });
+  } catch (error) {
+    console.log("Error creating activity", error);
+  }
 
   res.json({ success: true, goalProgress });
 };
