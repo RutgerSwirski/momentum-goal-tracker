@@ -99,7 +99,9 @@ const DashboardPage = () => {
 
           {upcomingGoals?.map((goal, index) => (
             <div key={index}>
-              <h3>{goal.name}</h3>
+              <Link href={`/goals/${goal._id}`}>
+                <h3>{goal.name}</h3>
+              </Link>
               <span className="text-sm text-gray-600">
                 Due: {new Date(goal.dueDate).toDateString()}
               </span>
