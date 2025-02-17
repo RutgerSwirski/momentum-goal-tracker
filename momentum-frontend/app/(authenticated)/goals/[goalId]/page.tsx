@@ -124,6 +124,8 @@ const GoalPage = () => {
                 <option>Due Date</option>
                 <option>Priority</option>
               </select>
+
+              <NewTaskModal />
             </div>
             {tasksIsLoading ? (
               <div className="p-4 text-center text-gray-500">
