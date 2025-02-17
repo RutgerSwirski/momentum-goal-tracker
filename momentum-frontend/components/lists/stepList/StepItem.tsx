@@ -48,7 +48,6 @@ const StepItem = ({ step }) => {
             <h5 className="text-sm font-medium text-gray-800">{step.name}</h5>
             <EllipsisVerticalIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-gray-800 border rounded-md" />
           </div>
-
           <div className="flex items-center justify-between w-full">
             <p
               className={`text-sm max-w-md truncate ${
@@ -66,6 +65,10 @@ const StepItem = ({ step }) => {
               </button>
             )}
           </div>
+          Due Date:{" "}
+          {step.dueDate
+            ? new Date(step.dueDate).toLocaleDateString()
+            : "No due date"}
         </div>
       </div>
 

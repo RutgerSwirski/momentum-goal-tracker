@@ -14,6 +14,15 @@ const DashboardPage = () => {
     },
   });
 
+  const { data: dashboardData } = useQuery({
+    queryKey: ["dashboardData"],
+    queryFn: async () => {
+      return axiosInstance.get("/dashboard");
+    },
+  });
+
+  console.log({ currentUser, dashboardData });
+
   const badges = [
     {
       name: "Top Achiever",
