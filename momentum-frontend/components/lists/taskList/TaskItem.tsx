@@ -46,11 +46,11 @@ const TaskItem = ({ task }: { task: any }) => {
               <EllipsisVerticalIcon className="h-5 w-5 text-gray-500 cursor-pointer hover:text-gray-800 border rounded-md" />
             </div>
 
-            <div className="flex md:items-center space-y-4 md:space-x-4 flex-col  md:flex-row">
+            <div className="flex md:items-center space-4 md:space-x-4 flex-col  md:flex-row">
               {/* Progress Bar */}
 
               {/* Task Info */}
-              <span className="text-xs text-gray-500 border rounded-full bg-gray-100 px-4 py-1 ">
+              <span className="text-xs text-gray-500 flex items-center gap-2 border rounded-full bg-gray-100 px-4 py-1">
                 {task.priority === "high"
                   ? "🔥 High"
                   : task.priority === "medium"
