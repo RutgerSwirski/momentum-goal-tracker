@@ -15,6 +15,7 @@ import authenticateUser from "./middleware/authenticateUser";
 import taskRoutes from "./routes/task";
 import stepRoutes from "./routes/step";
 import activityRoutes from "./routes/activity";
+import dashboardRoutes from "./routes/dashboard";
 
 dotenv.config();
 
@@ -83,6 +84,8 @@ app.use("/tasks", authenticateUser, taskRoutes);
 app.use("/steps", authenticateUser, stepRoutes);
 
 app.use("/activity", authenticateUser, activityRoutes);
+
+app.use("/dashboard", authenticateUser, dashboardRoutes);
 
 connectDB();
 

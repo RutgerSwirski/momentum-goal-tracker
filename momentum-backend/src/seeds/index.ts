@@ -7,6 +7,7 @@ import User from "../models/User";
 import Goal from "../models/Goal";
 import Task from "../models/Task";
 import Step from "../models/Step";
+import Activity from "../models/Activity";
 
 const seedDatabase = async () => {
   try {
@@ -14,29 +15,32 @@ const seedDatabase = async () => {
       process.env.MONGO_URI || "mongodb://localhost:27017/momentum_db"
     );
 
-    // clear all data in the database
-    await User.deleteMany({});
-    await Goal.deleteMany({});
-    await Task.deleteMany({});
-    await Step.deleteMany({});
+    await Promise.all([
+      // clear all data in the database
+      await User.deleteMany({}),
+      await Goal.deleteMany({}),
+      await Task.deleteMany({}),
+      await Step.deleteMany({}),
+      await Activity.deleteMany({}),
+    ]);
+
     console.log("Cleared database");
 
     // Seed Users
     await seedUsers();
-    const users = await User.find({}, "_id");
-    const userIds = users.map((user) => user._id.toString());
+    const users = await User.find().select("_id");
+    console.log(`✅ Seeded ${users.length} users`);
 
-    // Seed Goals
-    await seedGoals(userIds);
-    const goals = await Goal.find({}, "_id");
-    const goalIds = goals.map((goal) => goal._id.toString());
+    await seedGoals(users);
+    const goals = await Goal.find().select("_id userId");
+    console.log(`✅ Seeded ${goals.length} goals`);
 
-    // Seed Tasks and get mapping of taskId -> goalId
-    const taskToGoalMap = await seedTasks(goalIds);
-    // const taskIds = Object.keys(taskToGoalMap); // Extract task IDs
+    await seedTasks(goals);
+    const tasks = await Task.find().select("_id goalId userId");
+    console.log(`✅ Seeded ${tasks.length} tasks`);
 
-    // Seed Steps with the task-to-goal mapping
-    await seedSteps(taskToGoalMap);
+    await seedSteps(tasks);
+    console.log(`✅ Seeded steps`);
 
     console.log("Seeded database");
     process.exit(0);

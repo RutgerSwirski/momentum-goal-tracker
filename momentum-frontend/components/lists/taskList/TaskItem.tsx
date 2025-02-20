@@ -85,7 +85,7 @@ const TaskItem = ({ task }: { task: any }) => {
       {expanded && (
         <div className="bg-gray-50">
           <StepList
-            taskId={task._id}
+            task={task}
             fetchSteps={(taskId: string) =>
               axiosInstance
                 .get(`/tasks/${taskId}/steps`)

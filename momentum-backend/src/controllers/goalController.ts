@@ -217,6 +217,7 @@ export const createGoalWithTasksAndSteps = async (req: any, res: any) => {
     const createdGoal = await goal.save();
 
     const goalId = createdGoal._id;
+    const userId = decoded.id;
 
     // if there are tasks, create them
     if (tasks && tasks.length > 0) {
@@ -224,7 +225,7 @@ export const createGoalWithTasksAndSteps = async (req: any, res: any) => {
         const task = new Task({
           ...taskData,
           goalId,
-          userId: req.userId,
+          userId,
         });
         await task.save();
 
@@ -236,7 +237,8 @@ export const createGoalWithTasksAndSteps = async (req: any, res: any) => {
             const step = new Step({
               ...stepData,
               taskId: task._id,
-              userId: req.userId,
+              goalId,
+              userId,
             });
             await step.save();
           }

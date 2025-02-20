@@ -14,10 +14,15 @@ const stepSchema = new Schema(
       required: true,
       index: true,
     },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
     name: {
       type: String,
       required: true,
-      maxlength: 1000,
     },
 
     description: {

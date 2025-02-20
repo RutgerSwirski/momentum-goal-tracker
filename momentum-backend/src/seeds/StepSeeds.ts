@@ -1,14 +1,13 @@
+import mongoose from "mongoose";
 import Step from "../models/Step";
 import { faker } from "@faker-js/faker";
 
-const seedSteps = async (
-  taskToGoalMap: Record<string, string>,
-  stepsPerTask = 10
-) => {
-  const steps = Object.entries(taskToGoalMap).flatMap(([taskId, goalId]) =>
+const seedSteps = async (tasks: any[], stepsPerTask = 3) => {
+  const steps = tasks.flatMap((task) =>
     Array.from({ length: stepsPerTask }).map(() => ({
-      taskId,
-      goalId, // Now correctly assigned
+      userId: task.userId,
+      taskId: task._id,
+      goalId: task.goalId,
       name: faker.lorem.words(),
       description: faker.lorem.sentence(),
       status: faker.helpers.arrayElement([

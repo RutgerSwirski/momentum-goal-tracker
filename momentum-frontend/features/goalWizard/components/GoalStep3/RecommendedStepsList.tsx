@@ -11,7 +11,7 @@ const RecommendedStepsList = () => {
   const selectedTaskIndex = useAtomValue(selectedTaskIndexAtom);
   const [selectedTask] = useAtom(selectedTaskAtom);
   const { data: recommendedSteps = [] } = useQuery({
-    queryKey: ["recommendedSteps", selectedTask.name],
+    queryKey: ["recommendedSteps", selectedTask?.name || ""],
     queryFn: async () => {
       const response = await axiosInstance.post("/recommendations/steps", {
         task: selectedTask.name,

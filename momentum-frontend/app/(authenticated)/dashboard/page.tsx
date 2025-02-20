@@ -2,9 +2,11 @@
 
 import DashboardHeader from "@/app/(authenticated)/dashboard/components/DashboardHeader";
 import DashboardTable from "@/app/(authenticated)/dashboard/components/DashboardTable";
+import Button from "@/components/common/Button";
 import Card from "@/components/common/Card";
 import axiosInstance from "@/utils/axiosInstance";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 
 const DashboardPage = () => {
   const { data: currentUser } = useQuery({
@@ -13,6 +15,15 @@ const DashboardPage = () => {
       return axiosInstance.get("/users/me");
     },
   });
+
+  const { data: dashboardData } = useQuery({
+    queryKey: ["dashboardData"],
+    queryFn: async () => {
+      return axiosInstance.get("/dashboard");
+    },
+  });
+
+  const { nextSteps, upcomingGoals, upcomingTasks } = dashboardData?.data || {};
 
   const badges = [
     {
@@ -84,9 +95,67 @@ const DashboardPage = () => {
         </Card>
 
         <Card>
-          <h3 className="text-lg font-semibold uppercase">Task of the Day</h3>
-          <p className="text-xl">Plan and wireframe portfolio site - 2 hours</p>
-          <p>"The secret of getting ahead is getting started."</p>
+          <h3>Goals Near Deadline</h3>
+
+          {upcomingGoals?.map((goal, index) => (
+            <div key={index}>
+              <Link href={`/goals/${goal._id}`}>
+                <h3>{goal.name}</h3>
+              </Link>
+              <span className="text-sm text-gray-600">
+                Due: {new Date(goal.dueDate).toDateString()}
+              </span>
+            </div>
+          ))}
+        </Card>
+
+        <Card>
+          <h3>Tasks Near Deadline</h3>
+
+          {upcomingTasks?.map((task, index) => (
+            <div key={index}>
+              <h3>{task.name}</h3>
+              <span className="text-sm text-gray-600">
+                Due: {new Date(task.dueDate).toDateString()}
+              </span>
+              <span className="text-sm text-gray-600">
+                Goal: {task.goalId.name}
+              </span>
+            </div>
+          ))}
+        </Card>
+
+        <Card>
+          <h3>Next Steps</h3>
+          {nextSteps?.map((step, index) => (
+            <div className="flex flex-col gap-2" key={index}>
+              <h3>{step.name}</h3>
+              <p>{step.description}</p>
+              <span className="bg-teal-100 px-2 py-1 rounded">
+                {step.status}
+              </span>
+
+              <span className="text-sm text-gray-600">
+                Due: {new Date(step.dueDate).toDateString()}
+              </span>
+
+              {/* task name */}
+              <span className="text-sm text-gray-600">
+                Task:
+                {step.taskId.name}
+              </span>
+
+              {/* goal name */}
+              <span className="text-sm text-gray-600">
+                Goal:
+                <Link href={`/goals/${step.taskId.goalId._id}`}>
+                  {step.taskId.goalId.name}
+                </Link>
+              </span>
+
+              <Button>Mark as Complete</Button>
+            </div>
+          ))}
         </Card>
 
         <Card className="col-span-1">
